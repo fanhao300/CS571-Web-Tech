@@ -37,10 +37,15 @@ hr {
 }
 
 
-.portal img{
-    width: 800px;
-    height: 480px;
-	object-fit:cover;
+ .portal{
+    width: 900px;
+    height: 507px;
+    background-image: url(https://csci571.com/hw/hw3/images/Cutlery.png);
+    background-size: 900px 900px;
+    background-position: left -50px;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  
 }
 
 .title{
@@ -70,14 +75,13 @@ hr {
 
 .table_ele{
     background-color: #B1E0E7;
-    height: 333px;
-    width: 400px;
+    height: 350px;
+    width: 420px;
 }
 
 .table_ele img{
-    width: 385px;
-    height: 333px;
-	/* object-fit:cover; */
+    width: 400px;
+    height: 350px;
 }
 
 .group_name{
