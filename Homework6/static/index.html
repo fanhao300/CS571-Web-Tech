@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <!-- <link rel="stylesheet" type="text/css" href="/static/css/style.css"> -->
+    <link rel="stylesheet" type="text/css" href="./css/style.css"> 
+    <title>Stock Search</title>
+</head>
+<body style="background-color:#6060A4;">
+    <div class="container">
+        <div class="main_portal">
+            <h1 class="title text"> Stock Search</h1>  
+            <form>
+            <div class="input_container">
+                <label class="required text" style="font-size: large;"for="stock">Enter Stock Ticker Symbol</label>
+                <input type="text" id="stock" name="stock" style="margin-left: 20px;" required>
+            </div>
+            <div class="buttons_container">
+                <input type="submit" class="button" value="Search">
+                <input type="reset" class="button" style="margin-left: 40px;" value="Clear">
+            </div>
+            </form>
+
+        </div>
+        <hr style="background-color: #E8E8E8; height: 2px; margin-top: 13px; border-width: 0;">
+        <div id="navigation">
+            <ul>
+                <li class="text"><a class="active" href="#company">Company OutLook</a></li>
+                <li class="text"><a href="#summary">Stock Summary</a></li>
+                <li class="text"><a href="#charts">Charts</a></li>
+                <li class="text"><a href="#news">Latest News</a></li>
+            </ul>
+        </div>
+        <div id="company_inf">
+            
+        </div>
+        
+    </div>
+    
+</body>
+</html>
