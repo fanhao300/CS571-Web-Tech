@@ -96,3 +96,33 @@ li a:hover:not(.active) {
 li a.active {
     background-color: #c7c7c7;
 }
+
+.company_outlook{
+    border: none;
+    table-layout:fixed;
+    border-collapse: collapse;
+}
+
+
+.company_outlook th{
+    background-color: #d2d2d2; 
+    text-align: left;
+    width: 320px;
+    height: fit-content;
+    padding-top: 4px;
+    padding-bottom: 3px;
+    padding-left: 4px;
+    border: 1px solid rgb(155, 155, 155);
+
+}
+
+.company_outlook td{
+    background-color: #e8e8e8;
+    text-align: center;
+    word-wrap: break-word;
+    padding-top: 3px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border: 1px solid rgb(155, 155, 155);
+}

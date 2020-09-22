@@ -2,21 +2,28 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <!-- <link rel="stylesheet" type="text/css" href="/static/css/style.css"> -->
-    <link rel="stylesheet" type="text/css" href="./css/style.css"> 
     <title>Stock Search</title>
+
+
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <script src="/static/script.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="./style.css"> 
+    <script src="./script.js"></script> -->
 </head>
+
+
 <body style="background-color:#6060A4;">
     <div class="container">
         <div class="main_portal">
             <h1 class="title text"> Stock Search</h1>  
-            <form>
+            <form onsubmit="return cancelSubmit()">
             <div class="input_container">
-                <label class="required text" style="font-size: large;"for="stock">Enter Stock Ticker Symbol</label>
+                <label class="required text" style="font-size: large;" for="stock">Enter Stock Ticker Symbol</label>
                 <input type="text" id="stock" name="stock" style="margin-left: 20px;" required>
             </div>
             <div class="buttons_container">
-                <input type="submit" class="button" value="Search">
+                <input type="button" class="button" value="Search" onclick="getInformation()">
+                <input id="submit_handle" type="submit" style="display: none">
                 <input type="reset" class="button" style="margin-left: 40px;" value="Clear">
             </div>
             </form>
@@ -32,7 +39,32 @@
             </ul>
         </div>
         <div id="company_inf">
-            
+            <table class="company_outlook text" style="width:100%; margin-top: 30px;">
+                <tr>
+                    <th> Company Name</th>
+                    <td> xxxx </td>
+                </tr>
+                <tr>
+                    <th> Stock Ticker Symbol</th>
+                    <td> xxxx </td>
+                </tr>
+                <tr>
+                    <th> Stock Exchange Code</th>
+                    <td> xxxx </td>
+                </tr>
+                <tr>
+                    <th> Company Start Date</th>
+                    <td> xxxx </td>
+                </tr>
+                <tr>
+                    <th> Description</th>
+                    <td id="description"> Alibaba Group’s mission is to make it easy to do business anywhere. 
+                        The company aims to build the future infrastructure of commerce. 
+                        It envisions that its customers will meet, work and live at Alibaba, 
+                        and that it will be a good company that lasts for 102 years. </td>
+                </tr>
+
+            </table>
         </div>
         
     </div>
