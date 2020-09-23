@@ -20,9 +20,15 @@ def stock_request():
         if "detail" in info.keys() and info["detail"] == "Not found." :
             return jsonify({'info': info})
         else:
-            ticker = util.get_company_stock(stock_name)
-            news = util.get_company_news(stock_name)
-            trend = util.get_company_stock_trend(stock_name)
+            try:
+                ticker = util.get_company_stock(stock_name)
+                news = util.get_company_news(stock_name)
+                trend = util.get_company_stock_trend(stock_name)
+            except:
+                info = {
+                    "detail" : "Not found."
+                }
+                return jsonify({'info': info})
             return jsonify({'ticker': ticker, 'info': info, 'news': news, 'trend': trend})
 
 # run the app.

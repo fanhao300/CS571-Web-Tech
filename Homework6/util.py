@@ -24,8 +24,6 @@ def get_company_stock(company_ticker):
     requestResponse = requests.get(url, headers=headers)
     
     inf = requestResponse.json()[0]
-    inf["last"] = 122.76
-    inf["prevClose"] = 124.92
     inf["timestamp"] = inf["timestamp"][:10]
     inf["change"] = round(inf["last"] - inf["prevClose"], 2)
     inf["changePercent"] = round(inf["change"] / inf["prevClose"] * 100, 2)

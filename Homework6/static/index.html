@@ -5,10 +5,10 @@
     <title>Stock Search</title>
 
 
-    <link rel="stylesheet" type="text/css" href="/static/style.css">
-    <script src="/static/script.js"></script>
-    <!-- <link rel="stylesheet" type="text/css" href="./style.css"> 
-    <script src="./script.js"></script> -->
+    <!-- <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <script src="/static/script.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="./style.css"> 
+    <script src="./script.js"></script>
 </head>
 
 
@@ -19,53 +19,44 @@
             <form onsubmit="return cancelSubmit()">
             <div class="input_container">
                 <label class="required text" style="font-size: large;" for="stock">Enter Stock Ticker Symbol</label>
-                <input type="text" id="stock" name="stock" style="margin-left: 20px;" required>
+                <input type="text" id="stock" name="stock" style="margin-left: 20px;" required autocomplete="off">
             </div>
             <div class="buttons_container">
                 <input type="button" class="button" value="Search" onclick="getInformation()">
                 <input id="submit_handle" type="submit" style="display: none">
-                <input type="reset" class="button" style="margin-left: 40px;" value="Clear">
+                <input type="reset" class="button" style="margin-left: 40px;" value="Clear" onclick="clearInfo()">
             </div>
             </form>
 
         </div>
-        <hr style="background-color: #E8E8E8; height: 2px; margin-top: 13px; border-width: 0;">
-        <div id="navigation">
-            <ul>
-                <li class="text"><a class="active" href="#company">Company OutLook</a></li>
-                <li class="text"><a href="#summary">Stock Summary</a></li>
-                <li class="text"><a href="#charts">Charts</a></li>
-                <li class="text"><a href="#news">Latest News</a></li>
-            </ul>
-        </div>
-        <div id="company_inf">
-            <table class="company_outlook text" style="width:100%; margin-top: 30px;">
-                <tr>
-                    <th> Company Name</th>
-                    <td> xxxx </td>
-                </tr>
-                <tr>
-                    <th> Stock Ticker Symbol</th>
-                    <td> xxxx </td>
-                </tr>
-                <tr>
-                    <th> Stock Exchange Code</th>
-                    <td> xxxx </td>
-                </tr>
-                <tr>
-                    <th> Company Start Date</th>
-                    <td> xxxx </td>
-                </tr>
-                <tr>
-                    <th> Description</th>
-                    <td id="description"> Alibaba Group’s mission is to make it easy to do business anywhere. 
-                        The company aims to build the future infrastructure of commerce. 
-                        It envisions that its customers will meet, work and live at Alibaba, 
-                        and that it will be a good company that lasts for 102 years. </td>
-                </tr>
+        <hr style="background-color: #E8E8E8; height: 2px; margin-top: 13px; border-width: 0;" id="hr">
 
-            </table>
+        <!-- <div id="navigation"></div> -->
+        <div id="info" style="margin-top: 30px;"></div>
+        <div id="error_message"></div>
+
+        <div id="navigation">
+            <div class="navigation"> 
+                <button class="left" onclick="showOutlook()">Company OutLook</button> 
+                <button onclick="showStock()">Stock Summary</button> 
+                <button onclick="showTrend()">Charts</button> 
+                <button class="active" onclick="showNews()">Latest News</button> 
+            </div>
         </div>
+        <div id="info" style="margin-top: 30px;">
+            <div class="news_container">
+                <div style="height: 120px; width: 134px; float: left;">
+                    <img src="https://images.macrumors.com/article-new/2020/08/top_stories_22aug2020.jpg" class="news_img">
+                </div>
+                <div class="text" style="height: 120px; width: 1060px; float: left; padding-top: 10px; font-size:2.4ex;">
+                    <b>Top Stories: Epic vs. Apple Escalates, AAPL Worth $2T, iOS 14 Beta 5 Changes</b></br>
+                    Published Date: </br>
+                    <a href="https://www.macrumors.com/2020/08/22/top-stories-epic-apple-escalation/">See Original Post</a>
+
+                </div>
+            </div>
+            <div class="news_container"></div>
+        </div> 
         
     </div>
     

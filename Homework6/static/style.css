@@ -13,7 +13,6 @@
     height:334px;
     border-radius: 5px;
     background-color: #E8E8E8;
-    
 }
 
 .title{
@@ -45,8 +44,6 @@ input[type=text]:focus{
     border: 2px solid black;
 }
 
-
-
 .buttons_container{
     padding-top: 50px;
     padding-left: 470px;
@@ -68,33 +65,38 @@ input[type=text]:focus{
     background-color: #c7c7c7;
 }
 
-ul {
-    list-style-type: none;
-    margin-top: 13px;
-    padding: 0;
-    overflow: hidden;
+.navigation{
+    margin-top: 15px;
     background-color: #e8e8e8;
+    height: 50px;
 }
 
-li {
-    float: left;
-}
-
-li a {
-    display: block;
+.navigation button{
+    height: 50px;
+    border: none;
+    background-color: #e8e8e8;
     color: black;
     font-size: large;
     text-align: center;
-    padding: 14px 16px;
+    padding-left: 17px;
+    padding-right: 17px;
     text-decoration: none;
 }
 
-li a:hover:not(.active) {
+.navigation button:not(.left){
+    margin-left: -4px;
+}
+
+.navigation button:hover:not(.active) {
     background-color: #d2d2d2;
 }
 
-li a.active {
+.navigation button.active {
     background-color: #c7c7c7;
+} 
+
+.navigation button:focus {
+    outline:0;
 }
 
 .company_outlook{
@@ -126,3 +128,30 @@ li a.active {
     padding-right: 4px;
     border: 1px solid rgb(155, 155, 155);
 }
+
+.arrow_img{
+    height: 15px;
+    width: 15px;
+    padding-left: 6px;
+}
+
+.news_container{
+    height: 120px;
+    width: 100%;
+    background-color: #E8E8E8;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    border-collapse: collapse;
+    
+}
+
+.news_img{
+    width: 100px;
+    height: 100px;
+    padding-top: 10px;
+    padding-left: 17px;
+    object-fit: cover;
+}
+
+
+
