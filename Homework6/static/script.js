@@ -15,14 +15,13 @@ function set_button_active(lable){
 
 async function getInformation() {
     // Get company ticker from user's input field
-    // $('#submit_handle').click();
     document.getElementById("submit_handle").click();
     let ticker = document.getElementById("stock").value;
     if (ticker.length ==  0) return;
 
     // Get company indormation from url
-    let url = "http://pythonappenv-env.eba-irrrehak.us-east-1.elasticbeanstalk.com/api/stock?stock=" + ticker.toUpperCase();
-    // let url = "http://127.0.0.1:5000/api/stock?stock=" + ticker.toUpperCase();
+    // let url = "http://pythonappenv-env.eba-irrrehak.us-east-1.elasticbeanstalk.com/api/stock?stock=" + ticker.toUpperCase();
+    let url = "http://127.0.0.1:5000/api/stock?stock=" + ticker.toUpperCase();
     let response = await fetch(url);
     if (! response.ok) return;
     json = await response.json();
@@ -61,8 +60,9 @@ function clearInfo(){
 function showOutlook(){
     set_button_active(0);
 
-    outlook = json.info;
+    let outlook = json.info;
     let info_div = document.getElementById("info");
+    info_div.classList.remove("charts");
     info_div.innerHTML =
         '<table class="company_outlook text" style="width:100%;"> \
             <tr> \
@@ -83,9 +83,11 @@ function showOutlook(){
             </tr> \
             <tr> \
                 <th> Description</th> \
-                <td id="description"> ' + outlook.description + '</td>\
+                <td> <p id="description" style="margin-top:4px; margin-bottom:4px;">' + outlook.description + '</p></td>\
             </tr> \
         </table>';
+    let p = document.getElementById("description");
+    $clamp(p, {clamp: 5});
 
 }
 
@@ -93,7 +95,7 @@ function showOutlook(){
 function showStock(){
     set_button_active(1);
     
-    stock = json.ticker;
+    let stock = json.ticker;
     let url="";
     if (stock.change > 0)  
         url ='<img class="arrow_img" src="https://csci571.com/hw/hw6/images/GreenArrowUp.jpg">';
@@ -102,6 +104,7 @@ function showStock(){
 
     // alert(stock.);
     let info_div = document.getElementById("info");
+    info_div.classList.remove("charts");
     info_div.innerHTML = 
         '<table class="company_outlook text" style="width:100%;"> \
             <tr> <th> Stock Ticker Symbol</th> <td>' + stock.ticker + '</td> </tr> \
@@ -122,17 +125,86 @@ function showStock(){
 function showTrend(){
     set_button_active(2);
 
-    stock = json.tocker;
+    let date_obj = new Date();
+    let date = date_obj.toJSON().slice(0,10);
+  
     let info_div = document.getElementById("info");
-    info_div.innerHTML = "";
+    info_div.classList.add("charts");
 
+    let stock_list = json.trend;
+    close_list = [];
+    volume_list = [];
+    for (let i = 0; i < stock_list.length; ++i){
+        close_list.push([stock_list[i].date, stock_list[i].close]);
+        volume_list.push([stock_list[i].date, stock_list[i].volume]);
+    }
+
+
+
+
+    Highcharts.stockChart('info', {
+        title: {
+            text: 'Stock Price '+json.info.ticker + ' ' + date
+        },
+        subtitle: {
+            useHTML: true,
+            text: '<a target="_blank" href="https://api.tiingo.com">Source: Tiigo</a>'
+        },
+    
+        xAxis: { 
+            gapGridLineWidth: 0,
+        },
+
+        yAxis: [
+            {title: { text: 'Stock Price'}, opposite: false},
+            {title: { text: 'Volume'}, opposite: true}
+        ],
+
+        rangeSelector: {
+            buttons: [{type: 'day', count: 7, text: '7d'}, 
+                {type: 'day', count: 15, text: '15d'}, 
+                {type: 'month', count: 1, text: '1m'},
+                {type: 'month', count: 3, text: '3m'},
+                {type: 'all', count: 1, text: '6m'}
+            ],
+            selected: 4,
+            inputEnabled: false
+        },
+
+        time: {
+            useUTC: true
+        },
+    
+        series: [{
+            name: json.info.ticker,
+            type: 'area',
+            data: close_list,
+            tooltip: {valueDecimals: 2},
+            fillColor: {
+                linearGradient: {x1: 0, y1: 0, x2: 0, y2: 1},
+                stops: [[0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]]
+            },
+            threshold: 0
+        },
+        {
+            name: json.info.ticker + ' Volume',
+            type: 'column',
+            maxPointWidth: 2,
+            data: volume_list,
+            color: '#444444',
+            threshold: 0,
+            yAxis: 1
+        }]
+    });
 }
 
 function showNews(){
     set_button_active(3);
 
-    news_list = json.news;
+    let news_list = json.news;
     let info_div = document.getElementById("info");
+    info_div.classList.remove("charts");
     info_div.innerHTML = "";
 
     for (let i = 0; i < news_list.length; i++){

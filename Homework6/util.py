@@ -1,5 +1,5 @@
 import requests
-from datetime import date
+from datetime import date,datetime,timezone
 from dateutil.relativedelta import *
 
 TIINGO_TOKEN = "7fa7d74973646b75de560ca7e7352e92300f4355"
@@ -67,6 +67,13 @@ def get_company_stock_trend(company_ticker):
     url = "https://api.tiingo.com/iex/"+ company_ticker +"/prices?startDate=" + start_date.strftime("%Y-%m-%d") + "&resampleFreq=12hour&columns=close,volume&token=" + TIINGO_TOKEN
     requestResponse = requests.get(url, headers=headers)
     inf = requestResponse.json()
+
+    for i in range(0,len(inf)):
+
+        dt_obj = datetime.strptime(inf[i]["date"][:10],'%Y-%m-%d').replace(tzinfo=timezone.utc)
+        millisec = dt_obj.timestamp() * 1000 
+        inf[i]["date"] = millisec
+        
     return inf
 
 

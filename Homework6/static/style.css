@@ -81,6 +81,7 @@ input[type=text]:focus{
     padding-left: 17px;
     padding-right: 17px;
     text-decoration: none;
+    cursor:pointer;
 }
 
 .navigation button:not(.left){
@@ -151,6 +152,10 @@ input[type=text]:focus{
     padding-top: 10px;
     padding-left: 17px;
     object-fit: cover;
+}
+
+.charts{
+    height: 400px;
 }
 
 

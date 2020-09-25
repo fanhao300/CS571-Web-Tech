@@ -3,16 +3,22 @@
 <head>
     <meta charset="utf-8" />
     <title>Stock Search</title>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
 
 
-    <!-- <link rel="stylesheet" type="text/css" href="/static/style.css">
-    <script src="/static/script.js"></script> -->
-    <link rel="stylesheet" type="text/css" href="./style.css"> 
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <script src="/static/script.js"></script>
+    <script src="/static/clamp.js"></script>
+
+    <!-- <link rel="stylesheet" type="text/css" href="./style.css"> 
     <script src="./script.js"></script>
+    <script src="./clamp.js"></script> -->
+  
 </head>
 
 
-<body style="background-color:#6060A4;">
+<body style=" background-color:#6060A4;">
+    <div style="width:1780px; height: 300px;">
     <div class="container">
         <div class="main_portal">
             <h1 class="title text"> Stock Search</h1>  
@@ -31,34 +37,12 @@
         </div>
         <hr style="background-color: #E8E8E8; height: 2px; margin-top: 13px; border-width: 0;" id="hr">
 
-        <!-- <div id="navigation"></div> -->
-        <div id="info" style="margin-top: 30px;"></div>
         <div id="error_message"></div>
-
-        <div id="navigation">
-            <div class="navigation"> 
-                <button class="left" onclick="showOutlook()">Company OutLook</button> 
-                <button onclick="showStock()">Stock Summary</button> 
-                <button onclick="showTrend()">Charts</button> 
-                <button class="active" onclick="showNews()">Latest News</button> 
-            </div>
-        </div>
-        <div id="info" style="margin-top: 30px;">
-            <div class="news_container">
-                <div style="height: 120px; width: 134px; float: left;">
-                    <img src="https://images.macrumors.com/article-new/2020/08/top_stories_22aug2020.jpg" class="news_img">
-                </div>
-                <div class="text" style="height: 120px; width: 1060px; float: left; padding-top: 10px; font-size:2.4ex;">
-                    <b>Top Stories: Epic vs. Apple Escalates, AAPL Worth $2T, iOS 14 Beta 5 Changes</b></br>
-                    Published Date: </br>
-                    <a href="https://www.macrumors.com/2020/08/22/top-stories-epic-apple-escalation/">See Original Post</a>
-
-                </div>
-            </div>
-            <div class="news_container"></div>
-        </div> 
+        <div id="navigation"></div>
+        <div id="info" style="margin-top: 30px; margin-bottom: 30px;"></div>
         
     </div>
-    
+    </div>
 </body>
 </html>
+
