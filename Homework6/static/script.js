@@ -32,7 +32,7 @@ async function getInformation() {
         let navigation_div = document.getElementById("navigation");
         navigation_div.innerHTML = 
         '<div class="navigation"> \
-                <button class="active left" onclick="showOutlook()">Company OutLook</button> \
+                <button class="active left" onclick="showOutlook()">Company Outlook</button> \
                 <button onclick="showStock()">Stock Summary</button> \
                 <button onclick="showTrend()">Charts</button> \
                 <button onclick="showNews()">Latest News</button> \
@@ -83,12 +83,9 @@ function showOutlook(){
             </tr> \
             <tr> \
                 <th> Description</th> \
-                <td> <p id="description" style="margin-top:4px; margin-bottom:4px;">' + outlook.description + '</p></td>\
+                <td> <p class="description" style="margin-top:4px; margin-bottom:4px;">' + outlook.description + '</p></td>\
             </tr> \
         </table>';
-    let p = document.getElementById("description");
-    $clamp(p, {clamp: 5});
-
 }
 
 
