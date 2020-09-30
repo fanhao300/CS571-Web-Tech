@@ -141,15 +141,19 @@ function showTrend(){
 
     Highcharts.stockChart('info', {
         title: {
-            text: 'Stock Price '+json.info.ticker + ' ' + date
+            text: 'Stock Price '+json.info.ticker + ' ' + date,
+            margin: 20
         },
         subtitle: {
             useHTML: true,
-            text: '<a target="_blank" href="https://api.tiingo.com">Source: Tiigo</a>'
+            text: '<a target="_blank" href="https://api.tiingo.com">Source: Tiigo</a>',
+            y: 40
         },
     
         xAxis: { 
             gapGridLineWidth: 0,
+            minPadding: 0,
+            maxPadding: 0
         },
 
         yAxis: [
@@ -170,6 +174,12 @@ function showTrend(){
 
         time: {
             useUTC: true
+        },
+
+        plotOptions: {
+            series: {
+              pointPlacement: 'on'
+            }
         },
     
         series: [{
