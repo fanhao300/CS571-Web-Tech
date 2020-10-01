@@ -14,6 +14,7 @@ function set_button_active(lable){
 }
 
 async function getInformation() {
+    
     // Get company ticker from user's input field
     document.getElementById("submit_handle").click();
     let ticker = document.getElementById("stock").value;
@@ -25,14 +26,14 @@ async function getInformation() {
     let response = await fetch(url);
     if (! response.ok) return;
     json = await response.json();
-
+    
     clearInfo();
 
     if ("name" in json.info){
         let navigation_div = document.getElementById("navigation");
         navigation_div.innerHTML = 
         '<div class="navigation"> \
-                <button class="active left" onclick="showOutlook()">Company Outlook</button> \
+                <button class="left" onclick="showOutlook()">Company Outlook</button> \
                 <button onclick="showStock()">Stock Summary</button> \
                 <button onclick="showTrend()">Charts</button> \
                 <button onclick="showNews()">Latest News</button> \
@@ -58,6 +59,9 @@ function clearInfo(){
 }
 
 function showOutlook(){
+    let button = document.getElementById("navigation").firstChild.children[0];
+    if (button.classList.contains("active")) return;
+
     set_button_active(0);
 
     let outlook = json.info;
@@ -90,6 +94,9 @@ function showOutlook(){
 
 
 function showStock(){
+    let button = document.getElementById("navigation").firstChild.children[1];
+    if (button.classList.contains("active")) return;
+
     set_button_active(1);
     
     let stock = json.ticker;
@@ -120,10 +127,13 @@ function showStock(){
 
 
 function showTrend(){
+    let button = document.getElementById("navigation").firstChild.children[2];
+    if (button.classList.contains("active")) return;
+
     set_button_active(2);
 
-    let date_obj = new Date();
-    let date = date_obj.toJSON().slice(0,10);
+    let date = new Date().toLocaleString('en-GB', { timeZone: 'America/Los_Angeles' }).slice(0,10);
+    date = date.slice(6,10) + '-' + date.slice(3,5) + '-' + date.slice(0,2);
   
     let info_div = document.getElementById("info");
     info_div.classList.add("charts");
@@ -135,9 +145,6 @@ function showTrend(){
         close_list.push([stock_list[i].date, stock_list[i].close]);
         volume_list.push([stock_list[i].date, stock_list[i].volume]);
     }
-
-
-
 
     Highcharts.stockChart('info', {
         title: {
@@ -166,7 +173,7 @@ function showTrend(){
                 {type: 'day', count: 15, text: '15d'}, 
                 {type: 'month', count: 1, text: '1m'},
                 {type: 'month', count: 3, text: '3m'},
-                {type: 'all', count: 1, text: '6m'}
+                {type: 'month', count: 6, text: '6m'}
             ],
             selected: 4,
             inputEnabled: false
@@ -207,6 +214,9 @@ function showTrend(){
 }
 
 function showNews(){
+    let button = document.getElementById("navigation").firstChild.children[3];
+    if (button.classList.contains("active")) return;
+
     set_button_active(3);
 
     let news_list = json.news;
