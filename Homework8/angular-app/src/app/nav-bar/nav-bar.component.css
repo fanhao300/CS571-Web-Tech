@@ -1,0 +1,22 @@
+button:focus {
+    outline: 0;
+}
+
+.navbar-nav .active{
+    border: 2px solid white;
+    border-radius: 15px;
+}
+
+.nav-link{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.page-footer{
+    background-color: #dadada;
+    min-height: 60px;
+
+    /* Set text horizontal & vertical center  */
+    text-align: center;
+    line-height: 60px;
+}

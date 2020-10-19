@@ -1,0 +1,25 @@
+.header{
+    margin-top: 100px;
+    text-align: center;
+}
+
+.input-group{
+    margin-top: 70px;
+    border: 2px solid #704FFB;
+    border-radius: 30px;
+
+}
+
+.input-group input{
+    margin-left: -5px;
+    border-radius: 30px;
+    border: none;
+}
+
+.input-group input:focus {
+    box-shadow: 0 0 0 0;
+}
+
+.input-group .input-group-append button{
+    margin-right: 0px;
+}
