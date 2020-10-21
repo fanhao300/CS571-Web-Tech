@@ -1,5 +1,10 @@
+#Homework6
 /Homework6/*.zip
 /Homework6/env
 /Homework6/__pycache__/*
 .vscode
 
+
+#Homework8
+node_modules
+/Homework8/prod-build
