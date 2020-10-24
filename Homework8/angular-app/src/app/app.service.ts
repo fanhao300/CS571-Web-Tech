@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
-import {Stock} from './dataFormat'
+import {StockInf, StockLatestPrice} from './dataFormat'
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +13,15 @@ export class AppService {
     private http: HttpClient) { }
 
   rootUrl = '/api';
-  stockUrl = this.rootUrl + '/stock'
+  stockUrl = this.rootUrl + '/company/'
+  latestPriceUrl = this.rootUrl + '/stock/latest/'
 
-  getStockInf(): Observable<Stock[]>{
-    return this.http.get<Stock[]>(this.stockUrl);
+  getStockInf(ticker: string): Observable<StockInf>{
+    return this.http.get<StockInf>(this.stockUrl + ticker);
+  }
+
+  getStockLastestPrice(ticker: string): Observable<StockLatestPrice>{
+    return this.http.get<StockLatestPrice>(this.latestPriceUrl + ticker);
   }
 
 

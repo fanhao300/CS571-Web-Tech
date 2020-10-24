@@ -12,11 +12,11 @@ button:focus {
     margin-right: 10px;
 }
 
-.page-footer{
-    background-color: #dadada;
-    min-height: 60px;
 
-    /* Set text horizontal & vertical center  */
-    text-align: center;
-    line-height: 60px;
+a{
+    font-size: 15px;
+}
+
+.navbar-brand{
+    font-size: 20px;
 }

@@ -1,13 +1,17 @@
 .header{
-    margin-top: 100px;
+    margin-top: 120px;
     text-align: center;
 }
 
+.header h1{
+    font-size: 80px;
+    line-height: 1;
+}
+
 .input-group{
-    margin-top: 70px;
+    margin-top: 80px;
     border: 2px solid #704FFB;
     border-radius: 30px;
-
 }
 
 .input-group input{
@@ -23,3 +27,4 @@
 .input-group .input-group-append button{
     margin-right: 0px;
 }
+

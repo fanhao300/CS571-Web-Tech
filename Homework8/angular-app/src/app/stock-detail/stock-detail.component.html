@@ -1,0 +1,104 @@
+<div *ngIf="stockInf && stockLatestPrice; else spinner" class="container" style="margin-top: 40px;">
+    <ng-container *ngIf="stockInf.exist; else noStock">
+        <div class="row" >
+            <div class="col-7">
+                <div class="first-line-font">
+                    {{stockInf.ticker}}
+                </div>
+
+                <div class="second-line-font" style="color:gray">
+                    {{stockInf.name}}
+                </div>
+
+                <div class="third-line-font">
+                    {{stockInf.exchangeCode}}
+                </div>              
+            </div>
+            <div class="col-5">
+                <div class="first-line-font right" 
+                    [ngClass]="{'green': stockLatestPrice.change > 0,
+                    'red': stockLatestPrice.change < 0,
+                    'black': stockLatestPrice.change == 0 }">
+                    {{stockLatestPrice.last}}
+                </div>
+                <div class="second-line-font right" 
+                    [ngClass]="{'green': stockLatestPrice.change > 0,
+                    'red': stockLatestPrice.change < 0,
+                    'black': stockLatestPrice.change == 0 }">
+
+                    <svg *ngIf="stockLatestPrice.change > 0"  style="vertical-align: top;"
+                        width="0.7em" height="0.7em" viewBox="0 0 16 16" class="bi bi-caret-up-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                    </svg>
+
+                    <svg *ngIf="stockLatestPrice.change < 0"  style="vertical-align: middle;"
+                        width="0.7em" height="0.7em" viewBox="0 0 16 16" class="bi bi-caret-down-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                    </svg>
+
+                    {{stockLatestPrice.change}} ({{stockLatestPrice.changePer}}%)
+                </div>
+                <div class="third-line-font right">
+                    {{date}}
+                </div>
+            </div>
+
+        </div>
+        
+        <button type="button" class="btn btn-success" style="width: 60px;">Buy</button>
+        
+        <ng-container *ngIf="stockLatestPrice.bidPrice; else marketClose" >
+            <div class="marketStatus green">
+                <span style="background-color:#DAEADD;">
+                    Market is Open
+                </span>
+            </div>
+        </ng-container>
+
+        <ng-template #marketClose>
+            <div class="marketStatus red">
+                <span style="background-color:#F0D8D9;">
+                    Market Closed on {{stockLatestPrice.timestamp.slice(0,10) + " " + stockLatestPrice.timestamp.slice(11,19)}}
+                </span>
+            </div>
+        </ng-template>
+       
+        
+
+        <mat-tab-group mat-align-tabs="center">
+            <mat-tab label="Summary" class="min-tab-lable">
+                <app-stock-detail-summary></app-stock-detail-summary>
+            </mat-tab>
+            <mat-tab label="Top news" class="col-4">  
+                <app-stock-detail-news></app-stock-detail-news>
+            </mat-tab>
+            <mat-tab label="Charts" class="col-4">  
+                <app-stock-detail-charts></app-stock-detail-charts>
+            </mat-tab>
+        </mat-tab-group>
+        
+    </ng-container>
+
+
+
+
+    <!-- when the ticker is invalid  -->
+    <ng-template #noStock>
+        <div class="alert alert-danger" role="alert">
+            No result found. Please enter valid ticker.
+        </div>
+    </ng-template>    
+</div>
+
+
+
+
+<!-- When the page is loading -->
+<ng-template #spinner>
+    <div class="text-center">
+    <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>   
+    </div>   
+</ng-template>
+

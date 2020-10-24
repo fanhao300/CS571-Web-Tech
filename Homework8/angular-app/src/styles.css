@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.content {
+    min-height: calc(100vh - 100px);
+}
+
+.page-footer{
+    background-color: #dadada;
+    min-height: 50px;
+    margin-top: 50px;
+
+    /* Set text horizontal & vertical center  */
+    text-align: center;
+    line-height: 50px;
+}
