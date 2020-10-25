@@ -1,0 +1,44 @@
+.row-container{
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.card-body{
+    padding-top: 0;
+}
+
+.card{
+    height: auto;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    width: 100%;
+
+}
+
+.card-img{
+    margin: 20px 5% 0px 5%;
+    width: 90%;
+    max-height: 200px;
+    object-fit: cover;
+}
+
+.card-container{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+
+@media (min-width: 576px) {
+    .card-img{
+        margin: 20px 0 20px 10%;
+        height: 90px;
+    }
+    .card-container{
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .card-body{
+        padding-top: 30px;
+    }
+}

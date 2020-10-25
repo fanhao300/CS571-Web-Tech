@@ -17,7 +17,7 @@ export interface StockLatestPrice{
     open: number;
     high: number;
     low: number;
-    mid: number;
+    mid: string;
     volume: number;
     bidSize: number;
     bidPrice: number;
@@ -26,4 +26,21 @@ export interface StockLatestPrice{
     change: number;
     changePer: number;
     exist: number;
+}
+
+export interface StockGraphPrice{
+    date: string;
+    close: number;
+    high: number;
+    low: number;
+    open: number;
+}
+
+export interface News{
+    urlToImage: string;
+    source: string;
+    title: string;
+    description: string;
+    url: String,
+    publishedAt: string;
 }

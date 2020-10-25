@@ -1,4 +1,5 @@
-<div *ngIf="stockInf && stockLatestPrice; else spinner" class="container" style="margin-top: 40px;">
+<div *ngIf="stockInf && stockLatestPrice 
+    && stockSummaryPrice && newsList; else spinner" class="container" style="margin-top: 40px;">
     <ng-container *ngIf="stockInf.exist; else noStock">
         <div class="row" >
             <div class="col-7">
@@ -58,7 +59,7 @@
         <ng-template #marketClose>
             <div class="marketStatus red">
                 <span style="background-color:#F0D8D9;">
-                    Market Closed on {{stockLatestPrice.timestamp.slice(0,10) + " " + stockLatestPrice.timestamp.slice(11,19)}}
+                    Market Closed on {{getDateByUTC(stockLatestPrice.timestamp)}}
                 </span>
             </div>
         </ng-template>
@@ -67,10 +68,15 @@
 
         <mat-tab-group mat-align-tabs="center">
             <mat-tab label="Summary" class="min-tab-lable">
-                <app-stock-detail-summary></app-stock-detail-summary>
+                <app-stock-detail-summary 
+                    [stockInf]="stockInf" 
+                    [stockLatestPrice]="stockLatestPrice" 
+                    [stockSummaryPrice]="stockSummaryPrice">
+                </app-stock-detail-summary>
             </mat-tab>
             <mat-tab label="Top news" class="col-4">  
-                <app-stock-detail-news></app-stock-detail-news>
+                <app-stock-detail-news
+                    [newsList]="newsList"></app-stock-detail-news>
             </mat-tab>
             <mat-tab label="Charts" class="col-4">  
                 <app-stock-detail-charts></app-stock-detail-charts>

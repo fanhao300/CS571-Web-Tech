@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { AppService } from '../app.service';
-import {StockInf, StockLatestPrice} from '../dataFormat';
+import { StockInf, StockLatestPrice, StockGraphPrice, News} from '../dataFormat';
 
 
 @Component({
@@ -19,6 +19,8 @@ export class StockDetailComponent implements OnInit {
   stockInf: StockInf;
   stockLatestPrice: StockLatestPrice;
   date: string;
+  stockSummaryPrice: StockGraphPrice[];
+  newsList: News[]; 
 
   getStockInf(): void{
     let id: string = this.route.snapshot.paramMap.get('id');
@@ -32,22 +34,49 @@ export class StockDetailComponent implements OnInit {
       .subscribe(stockLatestPrice => this.stockLatestPrice = stockLatestPrice);
   }
 
-  getnowdate(): string{
-    let ts = Date.now();
+  getStockSummaryPrice(): void{
+    let id: string = this.route.snapshot.paramMap.get('id');
+    this.appService.getStockSummaryPrice(id)
+      .subscribe(stockSummaryPrice => this.stockSummaryPrice = stockSummaryPrice);
+  }
+
+  getNews():void{
+    let id: string = this.route.snapshot.paramMap.get('id');
+    this.appService.getNews(id)
+      .subscribe(newsList => this.newsList = newsList);
+  }
+
+  getDateByTs(ts: number): string{
     let time = new Date(ts);
-    let date = time.toLocaleDateString('en-US');
+    let date = time.toLocaleDateString('en-US', {timeZone: 'America/Los_Angeles'});
     date = date.slice(6,10) +"-"+ date.slice(0,2) +"-"+ date.slice(3,5);
     let ret = date + " "
-        + time.toLocaleTimeString('en-GB');
+        + time.toLocaleTimeString('en-GB', {timeZone: 'America/Los_Angeles'});
     return ret;
+  }
+
+  // The format of time is yyyy-mm-ddThh:mm:ss
+  getDateByUTC(time: string): string{
+    time = time.slice(0,19) + ".000+00:00";
+    let date = new Date(time);
+    return this.getDateByTs(date.getTime());
   }
 
   ngOnInit(): void {
     this.getStockInf();
     this.getStockLastestPrice();
-    this.date = this.getnowdate();
-    setInterval(() => this.date = this.getnowdate(), 1000*15);
-    setInterval(() => this.getStockLastestPrice(), 1000*15);
+    this.date = this.getDateByTs(Date.now());
+    this.getStockSummaryPrice();
+    this.getNews();
+
+
+    //Refresh every 15 seconds.
+    // setInterval(() => this.date = this.getDateByTs(Date.now()), 1000*15);
+    // setInterval(() => this.getStockLastestPrice(), 1000*15);
+
+    //Refresh every 4 minutes.
+    // setInterval(() => this.getStockSummaryPrice(), 1000*4*60);
+    
   }
 
 }

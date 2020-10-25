@@ -15,7 +15,8 @@ import { StockDetailSummaryComponent } from './stock-detail-summary/stock-detail
 import { StockDetailNewsComponent } from './stock-detail-news/stock-detail-news.component';
 import { StockDetailChartsComponent } from './stock-detail-charts/stock-detail-charts.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     AppRoutingModule,
     FontAwesomeModule,
     BrowserAnimationsModule,
-    MatTabsModule
+    MatTabsModule,
+    HighchartsChartModule
   ],
   providers: [],
   bootstrap: [AppComponent]

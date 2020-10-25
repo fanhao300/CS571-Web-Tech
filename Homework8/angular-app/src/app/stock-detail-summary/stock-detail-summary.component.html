@@ -1,1 +1,36 @@
-<p>stock-detail-summary works!</p>
+<div class="sub-container row">
+    <div class="col-md-6">
+        <div class="row">
+        <div class="col-6" style="padding-left: 4%;">
+            High Price: {{stockLatestPrice.high}} <br>
+            Low Price: {{stockLatestPrice.low}} <br>
+            Open Price: {{stockLatestPrice.open}} <br>
+            Prev. Close: {{stockLatestPrice.prevClose}} <br>
+            Volume: {{stockLatestPrice.volume}} <br>
+        </div>
+        <div class="col-6" *ngIf="stockLatestPrice.askPrice">
+            Mid Price: {{stockLatestPrice.mid}} <br>
+            Ask Price: {{stockLatestPrice.askPrice}} <br>
+            Ask Size: {{stockLatestPrice.askSize}} <br>
+            Bid Price: {{stockLatestPrice.bidPrice}} <br>
+            Bid Size: {{stockLatestPrice.bidSize}} <br>
+        </div>
+        </div>
+
+        <div style="margin-top: 40px;">
+            <h2 style="text-align: center;">Company's Description</h2>
+            Start Date: {{stockInf.startDate}}
+            <br> <br>
+            {{stockInf.description}}
+        </div>
+    </div>
+    <!-- charts -->
+    <div class="col-md-6">
+        <highcharts-chart 
+        [Highcharts]="Highcharts"
+        [options]="chartOptions"
+        [constructorType]="'stockChart'"
+        ></highcharts-chart>
+    </div>
+</div> 
+
