@@ -1,5 +1,5 @@
 <div class="sub-container row">
-    <div class="col-md-6">
+    <div class="col-lg-6">
         <div class="row">
         <div class="col-6" style="padding-left: 4%;">
             High Price: {{stockLatestPrice.high}} <br>
@@ -8,7 +8,7 @@
             Prev. Close: {{stockLatestPrice.prevClose}} <br>
             Volume: {{stockLatestPrice.volume}} <br>
         </div>
-        <div class="col-6" *ngIf="stockLatestPrice.askPrice">
+        <div class="col-6" *ngIf="isMarketOpen(stockLatestPrice.timestamp)">
             Mid Price: {{stockLatestPrice.mid}} <br>
             Ask Price: {{stockLatestPrice.askPrice}} <br>
             Ask Size: {{stockLatestPrice.askSize}} <br>
@@ -25,7 +25,7 @@
         </div>
     </div>
     <!-- charts -->
-    <div class="col-md-6">
+    <div class="col-lg-6 summary-chart">
         <highcharts-chart 
         [Highcharts]="Highcharts"
         [options]="chartOptions"

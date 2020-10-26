@@ -16,8 +16,9 @@ export class AppService {
   stockUrl = this.rootUrl + '/company/';
   latestPriceUrl = this.rootUrl + '/stock/latest/';
   summaryPriceUrl = this.rootUrl + '/stock/latestday/';
-  newsUrl = this.rootUrl + '/news/';
+  historicalPriceUrl = this.rootUrl + '/stock/historical/'
 
+  newsUrl = this.rootUrl + '/news/';
 
   getStockInf(ticker: string): Observable<StockInf>{
     return this.http.get<StockInf>(this.stockUrl + ticker);
@@ -31,9 +32,11 @@ export class AppService {
     return this.http.get<StockGraphPrice[]>(this.summaryPriceUrl + ticker);
   }
 
+  getStockHistoricalPrice(ticker: string): Observable<StockGraphPrice[]>{
+    return this.http.get<StockGraphPrice[]>(this.historicalPriceUrl + ticker);
+  }
+
   getNews(ticker: string): Observable<News[]>{
     return this.http.get<News[]>(this.newsUrl + ticker);
   }
-
-
 }

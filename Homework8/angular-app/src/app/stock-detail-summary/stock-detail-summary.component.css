@@ -4,3 +4,14 @@
     margin-right: 1%;
 }
 
+.summary-chart{
+    margin-top: 40px;
+}
+
+@media (min-width: 992px) {
+    .summary-chart{
+        margin-top: 0;
+    }
+}
+
+

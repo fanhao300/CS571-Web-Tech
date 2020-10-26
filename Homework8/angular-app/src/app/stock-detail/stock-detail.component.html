@@ -1,5 +1,5 @@
 <div *ngIf="stockInf && stockLatestPrice 
-    && stockSummaryPrice && newsList; else spinner" class="container" style="margin-top: 40px;">
+    && stockSummaryPrice && newsList && stockHistoricalPrice; else spinner" class="container" style="margin-top: 40px;">
     <ng-container *ngIf="stockInf.exist; else noStock">
         <div class="row" >
             <div class="col-7">
@@ -48,7 +48,7 @@
         
         <button type="button" class="btn btn-success" style="width: 60px;">Buy</button>
         
-        <ng-container *ngIf="stockLatestPrice.bidPrice; else marketClose" >
+        <ng-container *ngIf="isMarketOpen(stockLatestPrice.timestamp); else marketClose" >
             <div class="marketStatus green">
                 <span style="background-color:#DAEADD;">
                     Market is Open
@@ -66,7 +66,7 @@
        
         
 
-        <mat-tab-group mat-align-tabs="center">
+        <mat-tab-group mat-align-tabs="center" animationDuration="0ms">
             <mat-tab label="Summary" class="min-tab-lable">
                 <app-stock-detail-summary 
                     [stockInf]="stockInf" 
@@ -76,10 +76,14 @@
             </mat-tab>
             <mat-tab label="Top news" class="col-4">  
                 <app-stock-detail-news
-                    [newsList]="newsList"></app-stock-detail-news>
+                    [newsList]="newsList">
+                </app-stock-detail-news>
             </mat-tab>
             <mat-tab label="Charts" class="col-4">  
-                <app-stock-detail-charts></app-stock-detail-charts>
+                <app-stock-detail-charts
+                    [stockHistoricalPrice]="stockHistoricalPrice"
+                    [stockTicker]="stockInf.ticker">
+                </app-stock-detail-charts>
             </mat-tab>
         </mat-tab-group>
         

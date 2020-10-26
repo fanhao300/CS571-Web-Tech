@@ -70,7 +70,7 @@ app.get('/api/stock/latest/:ticker', (req, res) => {
 
 
 // Get stock latest day's price array. 
-//The date is in an array. And the interval is 15 seconds. 
+//The date is in an array. And the interval is 4 mins. 
 app.get('/api/stock/latestday/:ticker', (req, res) => {
   let ticker = req.params.ticker;
   let request = require('request');
@@ -108,6 +108,29 @@ app.get('/api/stock/latestday/:ticker', (req, res) => {
   );
 });
 
+//Get 2 year stock price. The interval is 1 day.
+app.get('/api/stock/historical/:ticker', (req, res) => {
+  let ticker=req.params.ticker;
+  let date = new Date();
+  date.setFullYear(date.getFullYear()-2);
+  date = date.toLocaleDateString('en-US');
+  date = date.slice(6,10) + "-" + date.slice(0,2) + "-" + date.slice(3,5);
+  let request = require('request');
+  let requestOptions = {
+    'url': `https://api.tiingo.com/tiingo/daily/${ticker}/prices?startDate=${date}&resampleFreq=daily&token=${tiingo_token}`,
+    'headers': {
+      'Content-Type': 'application/json'      
+    }
+  };
+  request(requestOptions,
+    function(error, response, body) {
+      body = JSON.parse(body);
+      res.json(body);
+    }
+  );
+});
+
+
 
 //Get news
 app.get('/api/news/:ticker', (req, res) => {
@@ -125,8 +148,16 @@ app.get('/api/news/:ticker', (req, res) => {
       body = body.articles;
       let news_list = [];
       let cnt = 0;
-      while (news_list.length < 20){
-        if (body[cnt].urlToImage && body[cnt].source.name 
+      while (news_list.length < 20 && body.length > cnt){
+        if (body[cnt] && 
+          body[cnt].hasOwnProperty("urlToImage") &&
+          body[cnt].hasOwnProperty("source") &&
+          body[cnt].source.hasOwnProperty("name") &&
+          body[cnt].hasOwnProperty("title") &&
+          body[cnt].hasOwnProperty("description") &&
+          body[cnt].hasOwnProperty("url") &&
+          body[cnt].hasOwnProperty("publishedAt") &&
+          body[cnt].urlToImage && body[cnt].source.name 
           && body[cnt].title && body[cnt].description 
           && body[cnt].url && body[cnt].publishedAt ){
             let news = {

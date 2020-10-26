@@ -16,6 +16,15 @@ export class StockDetailSummaryComponent implements OnInit {
 
   constructor() { }
 
+  isMarketOpen(time: string): boolean{
+    let ret: boolean = false;
+    let timeNow = new Date();
+    let timeCheck = new Date(time);
+    if (timeNow.getTime() - timeCheck.getTime() < 60 * 1000)
+      ret = true;
+    return ret;
+  }
+
 
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options;
@@ -23,7 +32,6 @@ export class StockDetailSummaryComponent implements OnInit {
     let close_list = [];
     for (let i = 0; i < this.stockSummaryPrice.length; ++i){
         let date = this.stockSummaryPrice[i].date;
-        date = date.slice(0,19) + ".000+00:00";
         let time = new Date(date);
         let ts = time.getTime()
         close_list.push([ts, this.stockSummaryPrice[i].close]);

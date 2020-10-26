@@ -20,6 +20,7 @@ export class StockDetailComponent implements OnInit {
   stockLatestPrice: StockLatestPrice;
   date: string;
   stockSummaryPrice: StockGraphPrice[];
+  stockHistoricalPrice: StockGraphPrice[];
   newsList: News[]; 
 
   getStockInf(): void{
@@ -40,6 +41,12 @@ export class StockDetailComponent implements OnInit {
       .subscribe(stockSummaryPrice => this.stockSummaryPrice = stockSummaryPrice);
   }
 
+  getStockHistoricalPrice(): void{
+    let id: string = this.route.snapshot.paramMap.get('id');
+    this.appService.getStockHistoricalPrice(id)
+      .subscribe(stockHistoricalPrice => this.stockHistoricalPrice = stockHistoricalPrice);
+  }
+
   getNews():void{
     let id: string = this.route.snapshot.paramMap.get('id');
     this.appService.getNews(id)
@@ -57,9 +64,17 @@ export class StockDetailComponent implements OnInit {
 
   // The format of time is yyyy-mm-ddThh:mm:ss
   getDateByUTC(time: string): string{
-    time = time.slice(0,19) + ".000+00:00";
     let date = new Date(time);
     return this.getDateByTs(date.getTime());
+  }
+
+  isMarketOpen(time: string): boolean{
+    let ret: boolean = false;
+    let timeNow = new Date();
+    let timeCheck = new Date(time);
+    if (timeNow.getTime() - timeCheck.getTime() < 60 * 1000)
+      ret = true;
+    return ret;
   }
 
   ngOnInit(): void {
@@ -67,6 +82,7 @@ export class StockDetailComponent implements OnInit {
     this.getStockLastestPrice();
     this.date = this.getDateByTs(Date.now());
     this.getStockSummaryPrice();
+    this.getStockHistoricalPrice();
     this.getNews();
 
 

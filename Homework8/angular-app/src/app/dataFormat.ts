@@ -34,6 +34,7 @@ export interface StockGraphPrice{
     high: number;
     low: number;
     open: number;
+    volume: number;
 }
 
 export interface News{
