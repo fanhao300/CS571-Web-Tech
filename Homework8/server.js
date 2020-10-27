@@ -84,7 +84,8 @@ app.get('/api/stock/latestday/:ticker', (req, res) => {
     function(error, response, body1) {
       body1 = JSON.parse(body1);
       body1 = body1[0];
-      if (body1){
+      if (body1 && body1.hasOwnProperty('lastSaleTimestamp')
+        && body1.lastSaleTimestamp != null){
         let ts = body1.lastSaleTimestamp.slice(0,10);
         let request2 = require('request');
         let requestOptions2 = {
@@ -157,9 +158,9 @@ app.get('/api/news/:ticker', (req, res) => {
           body[cnt].hasOwnProperty("description") &&
           body[cnt].hasOwnProperty("url") &&
           body[cnt].hasOwnProperty("publishedAt") &&
-          body[cnt].urlToImage && body[cnt].source.name 
-          && body[cnt].title && body[cnt].description 
-          && body[cnt].url && body[cnt].publishedAt ){
+          body[cnt].urlToImage != null && body[cnt].source.name != null
+          && body[cnt].title != null && body[cnt].description != null
+          && body[cnt].url != null && body[cnt].publishedAt != null ){
             let news = {
               "urlToImage": body[cnt].urlToImage,
               "source": body[cnt].source.name,

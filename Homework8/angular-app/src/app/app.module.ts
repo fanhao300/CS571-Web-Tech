@@ -17,6 +17,9 @@ import { StockDetailChartsComponent } from './stock-detail-charts/stock-detail-c
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTabsModule } from '@angular/material/tabs';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { StockDetailNewsSubwindowComponent } from './stock-detail-news-subwindow/stock-detail-news-subwindow.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -29,7 +32,8 @@ import { HighchartsChartModule } from 'highcharts-angular';
     StockDetailComponent,
     StockDetailSummaryComponent,
     StockDetailNewsComponent,
-    StockDetailChartsComponent
+    StockDetailChartsComponent,
+    StockDetailNewsSubwindowComponent
   ],
   imports: [
     HttpClientModule,  
@@ -38,7 +42,10 @@ import { HighchartsChartModule } from 'highcharts-angular';
     FontAwesomeModule,
     BrowserAnimationsModule,
     MatTabsModule,
-    HighchartsChartModule
+    HighchartsChartModule,
+    NgbModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
