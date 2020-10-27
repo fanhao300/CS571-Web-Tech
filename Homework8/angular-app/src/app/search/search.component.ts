@@ -1,6 +1,6 @@
+import { Route } from '@angular/compiler/src/core';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-search',
@@ -8,17 +8,15 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-  ticker = new FormControl('');
-  
-  constructor(
-    private router: Router) {}
+
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
+
   }
-  
 
   btnClick() {
-    this.router.navigateByUrl('/detail/' + this.ticker.value);
-};
+    this.router.navigateByUrl('/detail/aapl');
+} ;
 
 }

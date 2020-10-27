@@ -25,10 +25,10 @@ export class StockDetailSummaryComponent implements OnInit {
     return ret;
   }
 
+
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options;
-
-  configHighchart(): void{
+  ngOnInit(): void {
     let close_list = [];
     for (let i = 0; i < this.stockSummaryPrice.length; ++i){
         let date = this.stockSummaryPrice[i].date;
@@ -36,7 +36,6 @@ export class StockDetailSummaryComponent implements OnInit {
         let ts = time.getTime()
         close_list.push([ts, this.stockSummaryPrice[i].close]);
     }
-
     let color = '#ff0000';
     if (this.stockLatestPrice.change > 0){
       color = '#377E22';
@@ -77,16 +76,7 @@ export class StockDetailSummaryComponent implements OnInit {
         }
       }
     };
+
   }
 
-  chartCallback: Highcharts.ChartCallbackFunction = function (chart): void {
-    setTimeout(() => {
-     chart.reflow();
-    },0);
-  };
-
-
-  ngOnInit(): void {
-    this.configHighchart();
-  }
 }
