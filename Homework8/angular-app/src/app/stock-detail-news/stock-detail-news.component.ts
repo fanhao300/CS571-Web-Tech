@@ -1,6 +1,9 @@
 import { Component, OnInit, Input} from '@angular/core';
+import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import { News } from '../dataFormat';
+import { StockDetailNewsSubwindowComponent } from '../stock-detail-news-subwindow/stock-detail-news-subwindow.component'
+
 @Component({
   selector: 'app-stock-detail-news',
   templateUrl: './stock-detail-news.component.html',
@@ -10,12 +13,14 @@ export class StockDetailNewsComponent implements OnInit {
 
   @Input() newsList: News[];
 
-  news: News;
+  constructor(private modalService: NgbModal) { }
 
-  constructor() { }
+  open(news: News): void{
+    const modalRef = this.modalService.open(StockDetailNewsSubwindowComponent);
+    modalRef.componentInstance.news = news;
+  }
 
   ngOnInit(): void {
-    this.news = this.newsList[0];
   }
 
 }
