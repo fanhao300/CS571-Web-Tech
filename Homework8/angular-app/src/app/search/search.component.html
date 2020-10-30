@@ -5,10 +5,16 @@
     </div>
 
     <form (ngSubmit)="btnClick()">
-        <div class="d-flex justify-content-center">
+        <div  class="d-flex justify-content-center">
         <div class="col-8 col-md-3 col-xl-2 input-group">
             <input type="text" class="form-control" placeholder="Enter stock name"
-                [formControl]="ticker">
+                (change)="changeCount = changeCount + 1"
+                [formControl]="ticker"  matInput [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of options" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
             <div class="input-group-append">
                 <button class="btn" type="submit">
                     <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="color: #704FFB;">
@@ -18,7 +24,10 @@
                 </button>
             </div>
         </div>
-    </div>
+        </div>
+        
     </form>
 </div>
+
+{{changeCount}}
 

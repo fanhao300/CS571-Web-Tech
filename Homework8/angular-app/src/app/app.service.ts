@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
-import {StockInf, StockLatestPrice, StockGraphPrice, News} from './dataFormat'
+import {StockInf, StockLatestPrice, 
+        StockGraphPrice, News,
+        StockSearchResult} from './dataFormat'
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,7 @@ export class AppService {
   latestPriceUrl = this.rootUrl + '/stock/latest/';
   summaryPriceUrl = this.rootUrl + '/stock/latestday/';
   historicalPriceUrl = this.rootUrl + '/stock/historical/'
+  searchUrl = this.rootUrl + '/autocomplete/'
 
   newsUrl = this.rootUrl + '/news/';
 
@@ -38,5 +41,9 @@ export class AppService {
 
   getNews(ticker: string): Observable<News[]>{
     return this.http.get<News[]>(this.newsUrl + ticker);
+  }
+
+  getStockSearchResult(query: string): Observable<StockSearchResult[]>{
+    return this.http.get<StockSearchResult[]>(this.searchUrl + query);
   }
 }

@@ -16,6 +16,8 @@ import { StockDetailNewsComponent } from './stock-detail-news/stock-detail-news.
 import { StockDetailChartsComponent } from './stock-detail-charts/stock-detail-charts.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { StockDetailNewsSubwindowComponent } from './stock-detail-news-subwindow/stock-detail-news-subwindow.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -45,7 +47,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HighchartsChartModule,
     NgbModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatAutocompleteModule,
+    MatFormFieldModule
   ],
   providers: [],
   bootstrap: [AppComponent]

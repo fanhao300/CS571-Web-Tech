@@ -1,0 +1,69 @@
+.container{
+    max-width: 1400px;
+}
+
+button:focus {
+    outline: 0;
+}
+
+h1{
+    font-size: 35px;
+    margin-bottom: 50px;
+}
+
+.alert{
+    color: black;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.spinner-border{
+    color: #613CB0;
+    width: 4rem; 
+    height: 4rem;
+    margin-top: 50px;
+}
+
+.card{
+    margin-bottom: 20px;
+}
+
+.card-body{
+    padding-top: 0;
+}
+
+.first-line-font{
+    font-size: 30px;
+    min-height:40px;
+    line-height: 1;
+}
+
+.second-line-font{
+    font-size: 20px;
+    min-height: 20px;
+    padding-bottom: 5px;
+    line-height: 1;
+}
+
+.right{
+    text-align: right;
+}
+
+.red{
+    color: red;
+}
+
+.green{
+    color: green;
+}
+
+.black{
+    color: black;
+}
+
+.close{
+    text-align: right;
+    padding-right: 10px;
+    /* width: 10px; */
+}
+

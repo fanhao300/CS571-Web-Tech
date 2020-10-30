@@ -146,9 +146,17 @@ app.get('/api/news/:ticker', (req, res) => {
   request(requestOptions,
     function(error, response, body) {
       body = JSON.parse(body);
+      if (!body.hasOwnProperty("articles")){
+        body = {
+          exist: 0
+        }
+        res.json(body);
+        return;
+      }
       body = body.articles;
       let news_list = [];
       let cnt = 0;
+      
       while (news_list.length < 20 && body.length > cnt){
         if (body[cnt] && 
           body[cnt].hasOwnProperty("urlToImage") &&
@@ -179,6 +187,42 @@ app.get('/api/news/:ticker', (req, res) => {
 });
 
 
+//For auto-complete
+app.get('/api/autocomplete/:query', (req, res) => {
+  let query=req.params.query;
+  let request = require('request');
+  let requestOptions = {
+    'url': `https://api.tiingo.com/tiingo/utilities/search?query=${query}&token=${tiingo_token}`,
+    'headers': {
+      'Content-Type': 'application/json'      
+    }
+  };
+  request(requestOptions,
+    function(error, response, body) {
+      body = JSON.parse(body);
+      let retList = [];
+      let cnt = 0;
+      
+      while (retList.length < 10 && body.length > cnt){
+        if (body[cnt] && 
+          body[cnt].hasOwnProperty("name") &&
+          body[cnt].hasOwnProperty("ticker") &&
+          body[cnt].name != null && body[cnt].ticker != null){
+            let ret = {
+              "name": body[cnt].name,
+              "ticker": body[cnt].ticker,
+            }
+            retList.push(ret);
+        }
+        cnt = cnt + 1;
+      }
+      res.json(retList);
+    }
+  );
+});
+
+
+
 
 app.get('/', (req,res) => {
   //When develop, comment these lines.
@@ -187,14 +231,7 @@ app.get('/', (req,res) => {
   res.sendFile(process.cwd()+"/angular-app/dist/angular-app/index.html")
 });
 
-// app.get('*', routes.index);
 
 app.listen(port, () => {
     console.log(`Server listening on the port::${port}`);
 });
-
-// app.post('/api/user', (req, res) => {
-//   const user = req.body.user;
-//   users.push(user);
-//   res.json("user addedd");
-// });

@@ -11,5 +11,8 @@ export class AppComponent {
   title = 'Stock Search';
 
   ngOnInit() {
+    localStorage.setItem('watchList', 'AMZN,NVDA,');
+    // localStorage.setItem('portfolio', 'AMZN,NVDA');
+
   }
 }

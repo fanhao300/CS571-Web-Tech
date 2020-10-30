@@ -77,6 +77,29 @@ export class StockDetailComponent implements OnInit {
     return ret;
   }
 
+  isInWatchlist(ticker: string): boolean{
+    let watchListString = localStorage.getItem("watchList");
+    let watchList = watchListString.split(",");
+    watchList.splice(watchList.length - 1 ,1)
+
+    for (let item of watchList){
+      if (item == ticker) return true;
+    }
+    return false;
+  }
+
+  deleteTickerFromWatchlist(ticker:string): void{
+    let watchListString = localStorage.getItem("watchList");
+    watchListString = watchListString.replace(ticker+',', '');
+    localStorage.setItem("watchList", watchListString);
+  }
+
+  addTickerFromWatchList(ticker:string): void{
+    let watchListString = localStorage.getItem("watchList");
+    watchListString = watchListString+ticker+','
+    localStorage.setItem("watchList", watchListString);
+  }
+
   ngOnInit(): void {
     this.getStockInf();
     this.getStockLastestPrice();

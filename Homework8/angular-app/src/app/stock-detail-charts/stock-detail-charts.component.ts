@@ -101,7 +101,7 @@ export class StockDetailChartsComponent implements OnInit {
     }
 
     chartCallback: Highcharts.ChartCallbackFunction = function (chart): void {
-        setTimeout(() => {
+        setInterval(() => {
          chart.reflow();
         },0);
     };

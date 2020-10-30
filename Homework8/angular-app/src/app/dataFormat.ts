@@ -45,3 +45,8 @@ export interface News{
     url: String,
     publishedAt: string;
 }
+
+export interface StockSearchResult{
+    ticker: string;
+    name: string;
+}
