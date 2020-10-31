@@ -50,9 +50,6 @@ export class StockDetailSummaryComponent implements OnInit {
       title: {
         text: this.stockInf.ticker
       },
-      chart:{
-        // width: "300"
-      },
       yAxis: [
         { opposite: true}
       ],

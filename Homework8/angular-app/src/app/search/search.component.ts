@@ -25,7 +25,8 @@ export class SearchComponent implements OnInit {
   }
   
   btnClick() {
-    this.router.navigateByUrl('/detail/' + this.ticker.value);
+    if (this.ticker.value != '')
+      this.router.navigateByUrl('/detail/' + this.ticker.value);
   };
 
   options: string[] = ['One', 'Two', 'Three'];

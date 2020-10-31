@@ -11,18 +11,12 @@ export class AppComponent {
   title = 'Stock Search';
 
   ngOnInit() {
-    localStorage.setItem('watchList', 'AMZN,NVDA,');
-    let portfolio = [{
-      ticker: "AMZN",
-      quantity: 30,
-      totalCost: 6255.75
-    },{
-      ticker: "NVDA",
-      quantity: 55,
-      totalCost: 30780.1
-    }]
+    if (localStorage.getItem("portfolio") == null){
+      localStorage.setItem("portfolio","[]");
+    }
 
-    localStorage.setItem('portfolio', JSON.stringify(portfolio));
-    // localStorage.setItem('portfolio', "[]");
+    if (localStorage.getItem("watchList") == null){
+      localStorage.setItem("watchList","");
+    }
   }
 }
