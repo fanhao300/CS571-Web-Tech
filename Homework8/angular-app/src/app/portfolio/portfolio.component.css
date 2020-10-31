@@ -1,0 +1,69 @@
+.container{
+    max-width: 1400px;
+}
+
+.card{
+    margin-bottom: 20px;
+}
+
+.card-header{
+    display: flex;
+}
+
+.card-footer button{
+    float: right;
+
+}
+
+button:focus {
+    outline: 0;
+}
+
+h1{
+    font-size: 35px;
+    margin-bottom: 50px;
+}
+
+.alert{
+    color: black;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.spinner-border{
+    color: #613CB0;
+    width: 4rem; 
+    height: 4rem;
+    margin-top: 50px;
+}
+
+.right{
+    text-align: right;
+}
+
+.red{
+    color: red;
+}
+
+.green{
+    color: green;
+}
+
+.black{
+    color: black;
+}
+
+p{
+    margin-bottom: 0;
+    font-size: 17px;
+}
+
+.ticker{
+    font-size: 25px;
+}
+
+.name{
+    color: grey;
+    margin-left: 5px;
+}
+

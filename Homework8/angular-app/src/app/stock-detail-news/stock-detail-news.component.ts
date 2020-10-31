@@ -16,8 +16,8 @@ export class StockDetailNewsComponent implements OnInit {
   constructor(private modalService: NgbModal) { }
 
   open(news: News): void{
-    const modalRef = this.modalService.open(StockDetailNewsSubwindowComponent);
-    modalRef.componentInstance.news = news;
+    const newsSubwindow = this.modalService.open(StockDetailNewsSubwindowComponent);
+    newsSubwindow.componentInstance.news = news;
   }
 
   ngOnInit(): void {

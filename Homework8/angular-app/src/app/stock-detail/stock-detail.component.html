@@ -59,7 +59,18 @@
 
         </div>
         
-        <button type="button" class="btn btn-success" style="width: 60px;">Buy</button>
+        <button type="button" class="btn btn-success" style="width: 60px;"
+            data-target="#transaction-buy-window" data-toggle="modal">
+            Buy
+        </button>
+        <app-transaction-subwindow
+            [ticker]="stockInf.ticker"
+            [currentPrice]="stockLatestPrice.last"
+            idString="transaction-buy-window"
+            [isBuy]="true">
+        </app-transaction-subwindow>
+
+        
         
         <ng-container *ngIf="isMarketOpen(stockLatestPrice.timestamp); else marketClose" >
             <div class="marketStatus green">
@@ -98,8 +109,7 @@
                     [stockTicker]="stockInf.ticker">
                 </app-stock-detail-charts>
             </mat-tab>
-        </mat-tab-group>
-        
+        </mat-tab-group> 
     </ng-container>
 
 
@@ -124,4 +134,3 @@
     </div>   
     </div>   
 </ng-template>
-

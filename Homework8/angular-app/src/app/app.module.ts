@@ -22,6 +22,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import { StockDetailNewsSubwindowComponent } from './stock-detail-news-subwindow/stock-detail-news-subwindow.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TransactionSubwindowComponent } from './transaction-subwindow/transaction-subwindow.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     StockDetailSummaryComponent,
     StockDetailNewsComponent,
     StockDetailChartsComponent,
-    StockDetailNewsSubwindowComponent
+    StockDetailNewsSubwindowComponent,
+    TransactionSubwindowComponent
   ],
   imports: [
     HttpClientModule,  

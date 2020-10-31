@@ -50,3 +50,9 @@ export interface StockSearchResult{
     ticker: string;
     name: string;
 }
+
+export interface Portfolio{
+    ticker: string;
+    totalCost: number;
+    quantity: number;
+}

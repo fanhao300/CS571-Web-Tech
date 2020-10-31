@@ -47,7 +47,7 @@ export class WatchlistComponent implements OnInit {
   updateWatchList(): void{
     let watchListString = localStorage.getItem("watchList");
     this.watchList = watchListString.split(",");
-    this.watchList.splice(this.watchList.length - 1 ,1)
+    this.watchList.splice(this.watchList.length - 1 , 1);
     this.watchList.sort();
   }
 

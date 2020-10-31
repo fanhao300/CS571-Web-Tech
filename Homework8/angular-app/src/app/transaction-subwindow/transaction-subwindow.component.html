@@ -1,0 +1,51 @@
+<div class="modal fade" [id]="idString" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                {{ticker}}
+                <button type="button" class="close" aria-label="Close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Current Price: {{currentPrice}}
+                <form>
+                    <div class="row">
+                        <div class="col-md-2 quan-label"> Quantity </div>
+                        <div class="col-md-10 quan-input" >
+                            <input class="form-control" placeholder="0" 
+                                type="number" [formControl]="quantity">
+                        </div>
+                    </div> 
+                    
+                </form>
+            </div> 
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-8" style="padding-left: 0;">
+                        <p> Total: {{(currentPrice * quantity.value).toFixed(2)}}</p>
+                    </div>
+                    <div class="col-4" style="padding-right: 0;">
+                        <ng-container *ngIf="isBuy; else sell">
+                            <button type="button" class="btn btn-success foot-button" 
+                            data-dismiss="modal" 
+                            (click)="buyBtn(ticker, quantity.value, currentPrice * quantity.value)"
+                            [disabled]="quantity.value <= 0">
+                            Buy
+                            </button>                   
+                        </ng-container>
+                        <ng-template #sell>
+                            <button type="button" class="btn btn-success foot-button" 
+                            data-dismiss="modal" 
+                            (click)="sellBtn(ticker, quantity.value, currentPrice * quantity.value)"
+                            [disabled]="quantity.value <= 0 || quantity.value > totalNum">
+                            Sell
+                            </button>
+                        </ng-template>                   
+                    </div>             
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
