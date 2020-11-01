@@ -55,6 +55,7 @@ export interface Portfolio{
     ticker: string;
     totalCost: number;
     quantity: number;
+    name: string;
 }
 
 export interface WatchList{

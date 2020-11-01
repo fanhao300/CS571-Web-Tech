@@ -2,18 +2,18 @@
     <div class="col-lg-6">
         <div class="row">
         <div class="col-6" style="padding-left: 4%;">
-            High Price: {{stockLatestPrice.high}} <br>
-            Low Price: {{stockLatestPrice.low}} <br>
-            Open Price: {{stockLatestPrice.open}} <br>
-            Prev. Close: {{stockLatestPrice.prevClose}} <br>
-            Volume: {{stockLatestPrice.volume}} <br>
+            High Price: {{numberWithCommas(stockLatestPrice.high, true)}} <br>
+            Low Price: {{numberWithCommas(stockLatestPrice.low, true)}} <br>
+            Open Price: {{numberWithCommas(stockLatestPrice.open, true)}} <br>
+            Prev. Close: {{numberWithCommas(stockLatestPrice.prevClose, true)}} <br>
+            Volume: {{numberWithCommas(stockLatestPrice.volume, false)}} <br>
         </div>
         <div class="col-6" *ngIf="isMarketOpen(stockLatestPrice.timestamp)">
-            Mid Price: {{stockLatestPrice.mid}} <br>
-            Ask Price: {{stockLatestPrice.askPrice}} <br>
-            Ask Size: {{stockLatestPrice.askSize}} <br>
-            Bid Price: {{stockLatestPrice.bidPrice}} <br>
-            Bid Size: {{stockLatestPrice.bidSize}} <br>
+            Mid Price: {{numberWithCommas(stockLatestPrice.mid)}} <br>
+            Ask Price: {{numberWithCommas(stockLatestPrice.askPrice, true)}} <br>
+            Ask Size: {{numberWithCommas(stockLatestPrice.askSize, true)}} <br>
+            Bid Price: {{numberWithCommas(stockLatestPrice.bidPrice, true)}} <br>
+            Bid Size: {{numberWithCommas(stockLatestPrice.bidSize, true)}} <br>
         </div>
         </div>
 

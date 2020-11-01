@@ -10,6 +10,7 @@ import { Portfolio } from '../dataFormat';
 })
 export class TransactionSubwindowComponent implements OnInit {
   @Input() ticker: string;
+  @Input() name: string;
   @Input() currentPrice: number;
   @Input() totalNum: number;
   @Input() idString:string;
@@ -30,6 +31,7 @@ export class TransactionSubwindowComponent implements OnInit {
       let item: Portfolio={
         ticker: ticker,
         totalCost: cost,
+        name: name,
         quantity: quantity
       }
       portfolio.push(item);
@@ -42,7 +44,6 @@ export class TransactionSubwindowComponent implements OnInit {
     localStorage.setItem("portfolio", portfolioString)
 
     this.itemEvent.emit("success");
-    
   }
 
   sellBtn(ticker:string, quantity:number, cost:number):void{
@@ -57,7 +58,28 @@ export class TransactionSubwindowComponent implements OnInit {
     this.itemEvent.emit("success");
   }
 
+  numberWithCommas(x, isDecimal: boolean) {
+    // If x cannot convert to number
+    if (isNaN(Number(x))) return x;
+    else {
+      x = Number(x);
+    }
+
+    //convert x
+    let parts: string[];
+    if (isDecimal){
+      parts = x.toFixed(2).split(".");
+    }
+    else {
+      parts = x.toString().split(".");
+    }
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+  }
+
   ngOnInit(): void {
+    this.currentPrice = Number(this.currentPrice);
+    this.totalNum = Number(this.totalNum);
   }
 
 }

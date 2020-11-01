@@ -54,16 +54,18 @@ h1{
 }
 
 p{
-    margin-bottom: 0;
-    font-size: 17px;
+    margin-bottom: 5px;
+    font-size: 20px;
 }
 
 .ticker{
-    font-size: 25px;
+    margin-top: 10px;
+    font-size: 30px;
 }
 
 .name{
     color: grey;
     margin-left: 5px;
+    margin-top: 10px;
 }
 

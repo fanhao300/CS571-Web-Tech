@@ -1,7 +1,10 @@
 <div *ngIf="stockInf && stockLatestPrice 
     && stockSummaryPrice && newsList && stockHistoricalPrice; else spinner" class="container" style="margin-top: 40px;">
     <ng-container *ngIf="stockInf.exist; else noStock">
-        <div class="row" >
+        <ngb-alert *ngIf="addSuccessful" type="success" (close)="addSuccessful = false">{{stockInf.ticker}} added to Watchlist.</ngb-alert>
+        <ngb-alert *ngIf="deleteSuccessful" type="danger" (close)="!deleteSuccessful = false">{{stockInf.ticker}} removed from Watchlist.</ngb-alert>
+        <ngb-alert *ngIf="buySuccessful" type="success" (close)="buySuccessful = false">{{stockInf.ticker}} bought successfully!</ngb-alert>
+        <div class="row">
             <div class="col-7">
                 <div class="first-line-font">
                     {{stockInf.ticker}} 
@@ -13,7 +16,7 @@
                     </ng-container>
                     <ng-template #notInWatchlist>     
                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-star star" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                                (click)="addTickerFromWatchList(stockInf.ticker)">
+                                (click)="addTickerFromWatchList(stockInf.ticker,stockInf.name)">
                                 <path fill-rule="evenodd" d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288l1.847-3.658 1.846 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.564.564 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
                             </svg>
                     </ng-template>
@@ -33,7 +36,7 @@
                     [ngClass]="{'green': stockLatestPrice.change > 0,
                     'red': stockLatestPrice.change < 0,
                     'black': stockLatestPrice.change == 0 }">
-                    {{stockLatestPrice.last}}
+                    {{numberWithCommas(stockLatestPrice.last,true)}}
                 </div>
                 <div class="second-line-font right" 
                     [ngClass]="{'green': stockLatestPrice.change > 0,
@@ -50,7 +53,7 @@
                         <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
                     </svg>
 
-                    {{stockLatestPrice.change}} ({{stockLatestPrice.changePer}}%)
+                    {{numberWithCommas(stockLatestPrice.change,true)}} ({{numberWithCommas(stockLatestPrice.changePer,true)}}%)
                 </div>
                 <div class="third-line-font right">
                     {{date}}
@@ -65,9 +68,11 @@
         </button>
         <app-transaction-subwindow
             [ticker]="stockInf.ticker"
+            [name]="stockInf.name"
             [currentPrice]="stockLatestPrice.last"
             idString="transaction-buy-window"
-            [isBuy]="true">
+            [isBuy]="true"
+            (itemEvent)="afterBuyStock($event)">
         </app-transaction-subwindow>
 
         
@@ -117,7 +122,7 @@
 
     <!-- when the ticker is invalid  -->
     <ng-template #noStock>
-        <div class="alert alert-danger" role="alert">
+        <div class="alert alert-danger" role="alert" style="color: black;">
             No result found. Please enter valid ticker.
         </div>
     </ng-template>    

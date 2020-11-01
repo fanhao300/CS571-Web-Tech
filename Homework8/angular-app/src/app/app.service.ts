@@ -17,6 +17,7 @@ export class AppService {
   rootUrl = '/api';
   stockUrl = this.rootUrl + '/company/';
   latestPriceUrl = this.rootUrl + '/stock/latest/';
+  latestMultiplePricesUrl = this.rootUrl + '/stocks/latest/';
   summaryPriceUrl = this.rootUrl + '/stock/latestday/';
   historicalPriceUrl = this.rootUrl + '/stock/historical/'
   searchUrl = this.rootUrl + '/autocomplete/'
@@ -29,6 +30,10 @@ export class AppService {
 
   getStockLastestPrice(ticker: string): Observable<StockLatestPrice>{
     return this.http.get<StockLatestPrice>(this.latestPriceUrl + ticker);
+  }
+
+  getMultipleStocksLastestPrice(tickers: string): Observable<StockLatestPrice[]>{
+    return this.http.get<StockLatestPrice[]>(this.latestMultiplePricesUrl + tickers);
   }
 
   getStockSummaryPrice(ticker: string): Observable<StockGraphPrice[]>{

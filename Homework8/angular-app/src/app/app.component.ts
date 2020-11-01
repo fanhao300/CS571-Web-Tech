@@ -16,7 +16,7 @@ export class AppComponent {
     }
 
     if (localStorage.getItem("watchList") == null){
-      localStorage.setItem("watchList","");
+      localStorage.setItem("watchList","[]");
     }
   }
 }

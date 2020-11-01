@@ -1,9 +1,10 @@
+import { JsonPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { getTsBuildInfoEmitOutputFilePath } from 'typescript';
 
 import { AppService } from '../app.service';
-import { StockInf, StockLatestPrice, Portfolio} from '../dataFormat';
+import { StockLatestPrice, Portfolio} from '../dataFormat';
 
 @Component({
   selector: 'app-portfolio',
@@ -19,38 +20,21 @@ export class PortfolioComponent implements OnInit {
   ) { }
 
   portfolio: Portfolio[] = [];
+  stockPriceList: StockLatestPrice[];
 
-  stockInfList: StockInf[] = [];
-  isFinishedInf: boolean[] = [];
-  stockPriceList: StockLatestPrice[] = [];
-  isFinishedPrice: boolean[] = [];
-
-  
-  getStockInf(ticker: string, cnt: number): void{
-    this.appService.getStockInf(ticker)
-      .subscribe(stockInf => this.stockInfList[cnt] = stockInf,
-        (err) => console.log(err),
-        () => this.isFinishedInf[cnt] = true);
-  }
-
-  getStockLastestPrice(ticker: string, cnt: number): void{
-    this.appService.getStockLastestPrice(ticker)
-      .subscribe(stockPrice => this.stockPriceList[cnt] = stockPrice,
-        (err) => console.log(err),
-        () => this.isFinishedPrice[cnt] = true);
-  }
-
-
-  getStocks(): void{
-    for (let i = 0; i <this.portfolio.length; ++i){
-      this.getStockInf(this.portfolio[i].ticker, i);
-      this.getStockLastestPrice(this.portfolio[i].ticker, i);
+  getStocksString(): string{
+    if (this.portfolio.length == 0) return "";
+    let ret: string = "";
+    for (let i = 0; i < this.portfolio.length; ++i){
+      ret += this.portfolio[i].ticker + ',';
     }
+    return ret;
   }
-
-  getPortfolio(): void{
-    let portfolioString = localStorage.getItem("portfolio");
-    this.portfolio = JSON.parse(portfolioString);
+ 
+  getStocks(tickers: string): void{
+    if (tickers.length == 0) return;
+    this.appService.getMultipleStocksLastestPrice(tickers)
+      .subscribe(stocksPriceList => this.stockPriceList = stocksPriceList);
   }
 
   updatePortfolio(useless:string): void{
@@ -59,38 +43,48 @@ export class PortfolioComponent implements OnInit {
     for (let i = 0; i < this.portfolio.length; ++i){
       if (this.portfolio[i].quantity == 0){
         this.portfolio.splice(i,1);
-        portfolioString = JSON.stringify(this.portfolio);
-        localStorage.setItem("portfolio", portfolioString);
-        
-        this.stockInfList.splice(i, 1);
-        this.isFinishedInf.splice(i, 1);
         this.stockPriceList.splice(i, 1);
-        this.isFinishedPrice.splice(i, 1);
         break;
       }
     }
-  }
 
+    this.portfolio.sort((a,b) => {
+      if (a.ticker > b.ticker) return 1;
+      if (a.ticker < b.ticker) return -1;
+      if (a.ticker == b.ticker) return 0;
+    });
 
-  isFinished(): boolean{
-    for (let i = 0; i < this.portfolio.length; ++i){
-      if (this.isFinishedPrice[i] && this.isFinishedInf[i]){
-        continue;
-      }
-      else {
-        return false;
-      }
-    }
-    return true;
+    portfolioString = JSON.stringify(this.portfolio);
+    localStorage.setItem("portfolio", portfolioString);
+      
   }
 
   cardClick(ticker: string): void{
     this.router.navigateByUrl('/detail/' + ticker);
   }
 
+  numberWithCommas(x, isDecimal: boolean) {
+    // If x cannot convert to number
+    if (isNaN(Number(x))) return x;
+    else {
+      x = Number(x);
+    }
+
+    //convert x
+    let parts: string[];
+    if (isDecimal){
+      parts = x.toFixed(2).split(".");
+    }
+    else {
+      parts = x.toString().split(".");
+    }
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+  }
+
   ngOnInit(): void {
-    this.getPortfolio(); 
-    this.getStocks();
+    this.updatePortfolio("useless"); 
+    this.getStocks(this.getStocksString());
   }
 
 }

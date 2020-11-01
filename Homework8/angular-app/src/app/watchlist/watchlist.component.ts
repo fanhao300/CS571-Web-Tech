@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AppService } from '../app.service';
-import { StockInf, StockLatestPrice, } from '../dataFormat';
+import { StockLatestPrice, WatchList} from '../dataFormat';
 
 @Component({
   selector: 'app-watchlist',
@@ -14,76 +14,82 @@ export class WatchlistComponent implements OnInit {
     private appService: AppService,
     private router: Router) { }
 
-  watchList: string[];
-
-  stockInfList: StockInf[] = [];
-  isFinishedInf: boolean[] = [];
-  stockPriceList: StockLatestPrice[] = [];
-  isFinishedPrice: boolean[] = [];
-
-  
-  getStockInf(ticker: string, cnt: number): void{
-    this.appService.getStockInf(ticker)
-      .subscribe(stockInf => this.stockInfList[cnt] = stockInf,
-        (err) => console.log(err),
-        () => this.isFinishedInf[cnt] = true);
-  }
-
-  getStockLastestPrice(ticker: string, cnt: number): void{
-    this.appService.getStockLastestPrice(ticker)
-      .subscribe(stockPrice => this.stockPriceList[cnt] = stockPrice,
-        (err) => console.log(err),
-        () => this.isFinishedPrice[cnt] = true);
-  }
-
-
-  getStocks(): void{
-    for (let i = 0; i <this.watchList.length; ++i){
-      this.getStockInf(this.watchList[i], i);
-      this.getStockLastestPrice(this.watchList[i], i);
-    }
-  }
+  watchList: WatchList[];
+  stockPriceList: StockLatestPrice[];
+  str: string;
 
   updateWatchList(): void{
     let watchListString = localStorage.getItem("watchList");
-    this.watchList = watchListString.split(",");
-    this.watchList.splice(this.watchList.length - 1 , 1);
-    this.watchList.sort();
+    this.watchList = JSON.parse(watchListString);
+    
+    //sort
+    this.watchList.sort((a,b) => {
+      if (a.ticker > b.ticker) return 1;
+      if (a.ticker < b.ticker) return -1;
+      if (a.ticker == b.ticker) return 0;
+    });
+    watchListString = JSON.stringify(this.watchList);
+    localStorage.setItem("watchList", watchListString);
   }
 
-  isFinished(): boolean{
+  getStocksString(): string{
+    if (this.watchList.length == 0) return "";
+    let ret: string = "";
     for (let i = 0; i < this.watchList.length; ++i){
-      if (this.isFinishedPrice[i] && this.isFinishedInf[i]){
-        continue;
-      }
-      else {
-        return false;
+      ret += this.watchList[i].ticker + ',';
+    }
+    return ret;
+  }
+ 
+
+  getStocks(tickers: string): void{
+    if (tickers.length == 0) return;
+    this.appService.getMultipleStocksLastestPrice(tickers)
+      .subscribe(stocksPriceList => this.stockPriceList = stocksPriceList);
+  }
+
+  deleteWatchlist(ticker:string): void{
+    let watchListString = localStorage.getItem("watchList");
+    this.watchList = JSON.parse(watchListString);
+    for (let i = 0; i < this.watchList.length; ++i){
+      if (this.watchList[i].ticker == ticker){
+        //update watchList
+        this.watchList.splice(i, 1);
+        //update stock list
+        this.stockPriceList.splice(i, 1);
+        break;
       }
     }
-    return true;
-  }
-
-  deleteWatchlist(ticker:string, index:number): void{
-    //update watchList
-    let watchListString = localStorage.getItem("watchList");
-    watchListString = watchListString.replace(ticker+',', '');
+    watchListString = JSON.stringify(this.watchList);
     localStorage.setItem("watchList", watchListString);
-    this.updateWatchList();
-
-    //update stock list
-    this.stockInfList.splice(index, 1);
-    this.isFinishedInf.splice(index, 1);
-    this.stockPriceList.splice(index, 1);
-    this.isFinishedPrice.splice(index, 1);
   }
 
   cardClick(ticker: string): void{
     this.router.navigateByUrl('/detail/' + ticker);
   }
 
+  numberWithCommas(x, isDecimal: boolean) {
+    // If x cannot convert to number
+    if (isNaN(Number(x))) return x;
+    else {
+      x = Number(x);
+    }
+
+    //convert x
+    let parts: string[];
+    if (isDecimal){
+      parts = x.toFixed(2).split(".");
+    }
+    else {
+      parts = x.toString().split(".");
+    }
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+  }
+  
   ngOnInit(){
     this.updateWatchList();
-    this.getStocks();
+    this.getStocks(this.getStocksString());
   }
 
 }

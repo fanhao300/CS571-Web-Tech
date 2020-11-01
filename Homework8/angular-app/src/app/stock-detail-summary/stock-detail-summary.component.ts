@@ -82,6 +82,25 @@ export class StockDetailSummaryComponent implements OnInit {
     },0);
   };
 
+  numberWithCommas(x, isDecimal: boolean) {
+    // If x cannot convert to number
+    if (isNaN(Number(x))) return x;
+    else {
+      x = Number(x);
+    }
+
+    //convert x
+    let parts: string[];
+    if (isDecimal){
+      parts = x.toFixed(2).split(".");
+    }
+    else {
+      parts = x.toString().split(".");
+    }
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+  }
+
 
   ngOnInit(): void {
     this.configHighchart();

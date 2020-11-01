@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                Current Price: {{currentPrice}}
+                Current Price: {{numberWithCommas(+currentPrice, true)}}
                 <form>
                     <div class="row">
                         <div class="col-md-2 quan-label"> Quantity </div>
@@ -23,7 +23,7 @@
             <div class="modal-footer">
                 <div class="row">
                     <div class="col-8" style="padding-left: 0;">
-                        <p> Total: {{(currentPrice * quantity.value).toFixed(2)}}</p>
+                        <p> Total: {{numberWithCommas(currentPrice * quantity.value, true)}}</p>
                     </div>
                     <div class="col-4" style="padding-right: 0;">
                         <ng-container *ngIf="isBuy; else sell">

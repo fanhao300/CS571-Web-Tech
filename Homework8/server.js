@@ -68,6 +68,35 @@ app.get('/api/stock/latest/:ticker', (req, res) => {
   );
 });
 
+// Get stocks latest price 
+app.get('/api/stocks/latest/:ticker', (req, res) => {
+  let ticker=req.params.ticker;
+  let request = require('request');
+  let requestOptions = {
+    'url': `https://api.tiingo.com/iex/?tickers=${ticker}&token=${tiingo_token}`,
+    'headers': {
+      'Content-Type': 'application/json'      
+    }
+  };
+  request(requestOptions,
+    function(error, response, body) {
+      body = JSON.parse(body);
+      for (i = 0; i < body.length; ++i){
+        body[i].change = Number((body[i].last - body[i].prevClose).toFixed(2));
+        body[i].changePer = Number((body[i].change * 100 / body[i].prevClose).toFixed(2));
+        if (!body[i].mid) body[i].mid = "-"
+        body[i].exist = 1;
+      }
+      body.sort((a,b) => {
+        if (a.ticker > b.ticker) return 1;
+        if (a.ticker < b.ticker) return -1;
+        if (a.ticker == b.ticker) return 0;
+      });
+      res.json(body);
+    }
+  );
+});
+
 
 // Get stock latest day's price array. 
 //The date is in an array. And the interval is 4 mins. 

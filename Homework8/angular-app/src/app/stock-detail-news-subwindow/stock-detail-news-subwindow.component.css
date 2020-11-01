@@ -48,3 +48,18 @@ p{
     margin-top: 30px;
     margin-left: 15px;
 }
+
+.twitter-icon{
+    color: #31A2F0;
+    font-size: 35px;
+}
+
+.facebook-icon{
+    color: #101DF5;
+    font-size: 35px;
+    margin-left: 7px;
+}
+
+a:hover{
+    text-decoration: none;
+}

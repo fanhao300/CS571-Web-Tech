@@ -1,37 +1,37 @@
 <div class="container" style="margin-top: 40px;">
     <h1>My Portfolio</h1>
     <div *ngIf="portfolio.length; else noPortfolio">
-        <ng-container *ngIf="isFinished(); else loading">
-            <div *ngFor="let inf of stockInfList; let i = index;">
+        <ng-container *ngIf="stockPriceList; else loading">
+            <div *ngFor="let item of portfolio; let i = index;">
                 <div class="card" style="width: 100%;">
-                    <div class="card-header" (click)="cardClick(inf.ticker)">
-                        <p class="ticker">{{inf.ticker}}</p> 
-                        <p class="name">{{inf.name}}</p>
+                    <div class="card-header" (click)="cardClick(item.ticker)">
+                        <p class="ticker">{{item.ticker}}</p> 
+                        <p class="name">{{item.name}}</p>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="row">
-                                    <div class="col-8">
+                                    <div class="col-6">
                                         <p>Quantity:</p>
                                         <p>Avg. Cost/Share:</p> 
                                         <p>Total Cost:</p>
                                     </div>
-                                    <div class="col-4 right">
-                                        <p>{{portfolio[i].quantity}}</p>
-                                        <p>{{(portfolio[i].totalCost / portfolio[i].quantity).toFixed(2)}}</p> 
-                                        <p>{{portfolio[i].totalCost.toFixed(2)}}</p>
+                                    <div class="col-6 right">
+                                        <p>{{numberWithCommas(portfolio[i].quantity, false)}}</p>
+                                        <p>{{numberWithCommas(portfolio[i].totalCost / portfolio[i].quantity, true)}}</p> 
+                                        <p>{{numberWithCommas(portfolio[i].totalCost, true)}}</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="row">
-                                    <div class="col-8">
+                                    <div class="col-6">
                                         <p>Change:</p>
                                         <p>Current Price: </p>
                                         <p>Market Value: </p>
                                     </div>
-                                    <div class="col-4 right"
+                                    <div class="col-6 right"
                                         [ngClass]="{'green': +(stockPriceList[i].last - portfolio[i].totalCost / portfolio[i].quantity).toFixed(2)> 0,
                                         'red': +(stockPriceList[i].last - portfolio[i].totalCost / portfolio[i].quantity).toFixed(2)< 0,
                                         'black': +(stockPriceList[i].last - portfolio[i].totalCost / portfolio[i].quantity).toFixed(2) == 0 }">
@@ -44,10 +44,10 @@
                                                 width="0.7em" height="0.7em" viewBox="0 0 16 16" class="bi bi-caret-down-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
                                             </svg>
-                                            {{(stockPriceList[i].last - portfolio[i].totalCost / portfolio[i].quantity).toFixed(2)}} 
+                                            {{numberWithCommas(stockPriceList[i].last - portfolio[i].totalCost / portfolio[i].quantity, true)}} 
                                         </p>
-                                        <p>{{stockPriceList[i].last.toFixed(2)}} </p>
-                                        <p>{{(portfolio[i].quantity * stockPriceList[i].last).toFixed(2)}}</p>
+                                        <p>{{numberWithCommas(stockPriceList[i].last, true)}} </p>
+                                        <p>{{numberWithCommas(portfolio[i].quantity * stockPriceList[i].last, true)}}</p>
                                     </div>
                                 </div>                            
                             </div>
@@ -66,16 +66,18 @@
                         </button>
 
                         <app-transaction-subwindow
-                            [ticker]="inf.ticker"
-                            [currentPrice]="stockPriceList[i].last.toFixed(2)"
+                            [ticker]="item.ticker"
+                            [name]="item.name"
+                            [currentPrice]="stockPriceList[i].last"
                             [idString]="'transaction-window'+i+'buy'"
                             [isBuy]="true"
                             (itemEvent)="updatePortfolio($event)">
                         </app-transaction-subwindow>
 
                         <app-transaction-subwindow
-                            [ticker]="inf.ticker"
-                            [currentPrice]="stockPriceList[i].last.toFixed(2)"
+                            [ticker]="item.ticker"
+                            [name]="item.name"
+                            [currentPrice]="stockPriceList[i].last"
                             [totalNum]="portfolio[i].quantity"
                             [idString]="'transaction-window'+i+'sell'"
                             [isBuy]="false"
