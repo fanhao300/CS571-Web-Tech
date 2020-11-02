@@ -55,14 +55,16 @@
                     </div>
                     <div class="card-footer">
                         <button type="button" class="btn btn-danger" style="width: 60px;"
-                            [attr.data-target]="'#transaction-window'+i+'sell'" data-toggle="modal">
+                            [attr.data-target]="'#transaction-window'+i+'sell'" data-toggle="modal"
+                            (click)="updateStockData()">
                             Sell
                         </button>
 
                         <button type="button" class="btn btn-primary" 
-                        style="width: 60px; margin-right: 15px;"
-                        [attr.data-target]="'#transaction-window'+i+'buy'" data-toggle="modal">
-                        Buy
+                            style="width: 60px; margin-right: 15px;"
+                            [attr.data-target]="'#transaction-window'+i+'buy'" data-toggle="modal"
+                            (click)="updateStockData()">
+                            Buy
                         </button>
 
                         <app-transaction-subwindow

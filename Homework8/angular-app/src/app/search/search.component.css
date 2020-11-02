@@ -28,3 +28,13 @@
     margin-right: 0px;
 }
 
+.spinner-border{
+    color: #613CB0;
+    width: 2rem; 
+    height: 2rem;
+    margin-top: 15px;
+}
+
+.input-stock-name{
+    font-size: 13px;
+}

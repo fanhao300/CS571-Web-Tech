@@ -8,13 +8,29 @@
         <div  class="d-flex justify-content-center">
         <div class="col-8 col-md-5 col-lg-5 col-xl-2 input-group">
             <input type="text" class="form-control" placeholder="Enter stock name"
-                (change)="changeCount = changeCount + 1"
                 [formControl]="ticker"  matInput [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let option of options" [value]="option">
-                    {{option}}
-                </mat-option>
-            </mat-autocomplete>
+            
+                <mat-autocomplete #auto="matAutocomplete">
+                    <ng-container *ngIf="!isInput;">
+                    <ng-container *ngIf="searchResult; else loading">
+                        <mat-option *ngFor="let stock of searchResult" [value]="stock.ticker">
+                            {{stock.ticker}} 
+                            <span class="input-stock-name">| {{stock.name}}</span>
+                        </mat-option>
+                    </ng-container>
+
+                    <ng-template #loading>
+                        <mat-option>
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>   
+                        </mat-option>
+                    </ng-template>
+                </ng-container>
+                    
+                </mat-autocomplete>
+          
+               
             <div class="input-group-append">
                 <button class="btn" type="submit">
                     <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="color: #704FFB;">
@@ -28,6 +44,3 @@
         
     </form>
 </div>
-
-{{changeCount}}
-

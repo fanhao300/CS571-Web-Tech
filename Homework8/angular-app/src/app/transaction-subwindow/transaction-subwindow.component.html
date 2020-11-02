@@ -37,7 +37,7 @@
                         <ng-template #sell>
                             <button type="button" class="btn btn-success foot-button" 
                             data-dismiss="modal" 
-                            (click)="sellBtn(ticker, quantity.value, currentPrice * quantity.value)"
+                            (click)="sellBtn(ticker, quantity.value)"
                             [disabled]="quantity.value <= 0 || quantity.value > totalNum">
                             Sell
                             </button>

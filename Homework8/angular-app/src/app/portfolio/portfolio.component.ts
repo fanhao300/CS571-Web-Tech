@@ -21,6 +21,7 @@ export class PortfolioComponent implements OnInit {
 
   portfolio: Portfolio[] = [];
   stockPriceList: StockLatestPrice[];
+  tempStockPriceList: StockLatestPrice[];
 
   getStocksString(): string{
     if (this.portfolio.length == 0) return "";
@@ -38,6 +39,11 @@ export class PortfolioComponent implements OnInit {
   }
 
   updatePortfolio(useless:string): void{
+    if (this.tempStockPriceList){
+      this.stockPriceList = this.tempStockPriceList;
+      this.tempStockPriceList = null;
+    }
+
     let portfolioString = localStorage.getItem("portfolio");
     this.portfolio = JSON.parse(portfolioString);
     for (let i = 0; i < this.portfolio.length; ++i){
@@ -80,6 +86,15 @@ export class PortfolioComponent implements OnInit {
     }
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return parts.join(".");
+  }
+
+  updateStockData(){
+    let tickers: string = "";
+    for (let i = 0; i < this.portfolio.length; ++i){
+      tickers += this.portfolio[i].ticker + ',';
+    }
+    this.appService.getMultipleStocksLastestPrice(tickers)
+    .subscribe(stocksPriceList => this.tempStockPriceList = stocksPriceList);
   }
 
   ngOnInit(): void {

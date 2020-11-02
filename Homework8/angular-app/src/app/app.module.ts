@@ -37,7 +37,7 @@ import { TransactionSubwindowComponent } from './transaction-subwindow/transacti
     StockDetailNewsComponent,
     StockDetailChartsComponent,
     StockDetailNewsSubwindowComponent,
-    TransactionSubwindowComponent
+    TransactionSubwindowComponent,
   ],
   imports: [
     HttpClientModule,  

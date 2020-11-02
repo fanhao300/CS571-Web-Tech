@@ -50,8 +50,9 @@ export class TransactionSubwindowComponent implements OnInit {
     let portfolioString = localStorage.getItem("portfolio");
     let portfolio: Portfolio[] = JSON.parse(portfolioString);
     let target = portfolio.findIndex(item => item.ticker==ticker);
+    let q1 = portfolio[target].quantity, q2 = quantity;
     portfolio[target].quantity -= quantity;
-    portfolio[target].totalCost -= cost;
+    portfolio[target].totalCost -= portfolio[target].totalCost * q2 / q1;
     portfolioString = JSON.stringify(portfolio);
     localStorage.setItem("portfolio", portfolioString)
 
