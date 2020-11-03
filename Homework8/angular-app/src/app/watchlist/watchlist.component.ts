@@ -16,6 +16,7 @@ export class WatchlistComponent implements OnInit {
 
   watchList: WatchList[];
   stockPriceList: StockLatestPrice[];
+  tempStockPriceList: StockLatestPrice[];
   str: string;
 
   updateWatchList(): void{
@@ -41,7 +42,6 @@ export class WatchlistComponent implements OnInit {
     return ret;
   }
  
-
   getStocks(tickers: string): void{
     if (tickers.length == 0) return;
     this.appService.getMultipleStocksLastestPrice(tickers)
@@ -62,6 +62,17 @@ export class WatchlistComponent implements OnInit {
     }
     watchListString = JSON.stringify(this.watchList);
     localStorage.setItem("watchList", watchListString);
+   
+    if (this.tempStockPriceList){
+      for (let i = 0; i < this.stockPriceList.length; ++i)
+        for (let j = 0; j < this.tempStockPriceList.length; ++j){
+          if (this.stockPriceList[i].ticker == this.tempStockPriceList[j].ticker) {
+            this.stockPriceList[i] = this.tempStockPriceList[j];
+            break;
+          }
+        }
+    }
+    
   }
 
   cardClick(ticker: string): void{
@@ -86,10 +97,20 @@ export class WatchlistComponent implements OnInit {
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return parts.join(".");
   }
+
+  getTempStocks(tickers: string){
+    if (tickers.length == 0) return;
+    this.appService.getMultipleStocksLastestPrice(tickers)
+      .subscribe(stocksPriceList => this.tempStockPriceList = stocksPriceList);
+  }
   
   ngOnInit(){
     this.updateWatchList();
     this.getStocks(this.getStocksString());
+
+    //when develop, comment this line;
+    setInterval(() => this.getTempStocks(this.getStocksString()), 15 * 1000);
+
   }
 
 }

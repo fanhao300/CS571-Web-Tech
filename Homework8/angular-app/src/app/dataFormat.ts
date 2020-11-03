@@ -42,7 +42,7 @@ export interface News{
     source: string;
     title: string;
     description: string;
-    url: String,
+    url: string,
     publishedAt: string;
 }
 

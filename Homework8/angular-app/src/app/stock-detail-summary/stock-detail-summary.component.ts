@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { StockInf, StockLatestPrice, StockGraphPrice} from '../dataFormat';
 import * as Highcharts from "highcharts/highstock";
@@ -13,6 +13,7 @@ export class StockDetailSummaryComponent implements OnInit {
   @Input() stockInf: StockInf;
   @Input() stockLatestPrice: StockLatestPrice;
   @Input() stockSummaryPrice: StockGraphPrice[];
+  @Input() needUpdate: boolean;
 
   constructor() { }
 
@@ -104,5 +105,6 @@ export class StockDetailSummaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.configHighchart();
+    // setTimeout(()=> this.needUpdate = false, 1000);
   }
 }

@@ -94,13 +94,14 @@
         </ng-template>
        
         
-
+        <div>{{needUpdate}}</div>
         <mat-tab-group mat-align-tabs="center" animationDuration="0ms">
             <mat-tab label="Summary" class="min-tab-lable">
                 <app-stock-detail-summary 
                     [stockInf]="stockInf" 
                     [stockLatestPrice]="stockLatestPrice" 
-                    [stockSummaryPrice]="stockSummaryPrice">
+                    [stockSummaryPrice]="stockSummaryPrice"
+                    [needUpdate]="needUpdate">
                 </app-stock-detail-summary>
             </mat-tab>
             <mat-tab label="Top news" class="col-4">  
@@ -109,10 +110,12 @@
                 </app-stock-detail-news>
             </mat-tab>
             <mat-tab label="Charts" class="col-4">  
+                <ng-template matTabContent>
                 <app-stock-detail-charts
                     [stockHistoricalPrice]="stockHistoricalPrice"
                     [stockTicker]="stockInf.ticker">
                 </app-stock-detail-charts>
+                </ng-template>
             </mat-tab>
         </mat-tab-group> 
     </ng-container>
@@ -139,3 +142,4 @@
     </div>   
     </div>   
 </ng-template>
+

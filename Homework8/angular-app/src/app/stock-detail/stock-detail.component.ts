@@ -24,6 +24,7 @@ export class StockDetailComponent implements OnInit {
   stockSummaryPrice: StockGraphPrice[];
   stockHistoricalPrice: StockGraphPrice[];
   newsList: News[]; 
+  needUpdate: boolean = false;
 
   addSuccessful: boolean;
   deleteSuccessful: boolean;
@@ -47,7 +48,12 @@ export class StockDetailComponent implements OnInit {
   getStockSummaryPrice(): void{
     let id: string = this.route.snapshot.paramMap.get('id');
     this.appService.getStockSummaryPrice(id)
-      .subscribe(stockSummaryPrice => this.stockSummaryPrice = stockSummaryPrice);
+      .subscribe(stockSummaryPrice => this.stockSummaryPrice = stockSummaryPrice,
+        () => {}, 
+        () => {
+          this.needUpdate = true;
+          setTimeout(() => this.needUpdate = false, 1000*5)
+        });
   }
 
   getStockHistoricalPrice(): void{
@@ -180,8 +186,6 @@ export class StockDetailComponent implements OnInit {
     //Refresh every 15 seconds.
     // setInterval(() => this.date = this.getDateByTs(Date.now()), 1000*15);
     // setInterval(() => this.getStockLastestPrice(), 1000*15);
-
-    //Refresh every 4 minutes.
     // setInterval(() => this.getStockSummaryPrice(), 1000*15);
     
   }

@@ -100,11 +100,6 @@ export class StockDetailChartsComponent implements OnInit {
         };
     }
 
-    chartCallback: Highcharts.ChartCallbackFunction = function (chart): void {
-        setInterval(() => {
-         chart.reflow();
-        },0);
-    };
 
     ngOnInit(): void {
         let indicators = require('highcharts/indicators/indicators');

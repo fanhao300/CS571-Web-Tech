@@ -143,8 +143,8 @@ app.get('/api/stock/historical/:ticker', (req, res) => {
   let ticker=req.params.ticker;
   let date = new Date();
   date.setFullYear(date.getFullYear()-2);
-  date = date.toLocaleDateString('en-US');
-  date = date.slice(6,10) + "-" + date.slice(0,2) + "-" + date.slice(3,5);
+  date = date.toLocaleDateString('en-GB');
+  date = date.slice(6,10) + "-" + date.slice(3,5) + "-" + date.slice(0,2);
   let request = require('request');
   let requestOptions = {
     'url': `https://api.tiingo.com/tiingo/daily/${ticker}/prices?startDate=${date}&resampleFreq=daily&token=${tiingo_token}`,

@@ -9,7 +9,7 @@
             Volume: {{numberWithCommas(stockLatestPrice.volume, false)}} <br>
         </div>
         <div class="col-6" *ngIf="isMarketOpen(stockLatestPrice.timestamp)">
-            Mid Price: {{numberWithCommas(stockLatestPrice.mid)}} <br>
+            Mid Price: {{numberWithCommas(stockLatestPrice.mid, true)}} <br>
             Ask Price: {{numberWithCommas(stockLatestPrice.askPrice, true)}} <br>
             Ask Size: {{numberWithCommas(stockLatestPrice.askSize, true)}} <br>
             Bid Price: {{numberWithCommas(stockLatestPrice.bidPrice, true)}} <br>
@@ -30,7 +30,11 @@
         [Highcharts]="Highcharts"
         [options]="chartOptions"
         [constructorType]="'stockChart'"
+        [(update)]="needUpdate"
         ></highcharts-chart>
     </div>
 </div> 
+
+<div>{{needUpdate}}</div>
+
 

@@ -20,6 +20,10 @@ export class StockDetailNewsSubwindowComponent implements OnInit {
     return date.toLocaleDateString('en-US', options);
   }
 
+  encode(uri: string){
+      return encodeURI(uri);
+  }
+
   ngOnInit(): void {
   }
 
