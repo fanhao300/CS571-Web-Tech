@@ -184,9 +184,12 @@ export class StockDetailComponent implements OnInit {
 
 
     //Refresh every 15 seconds.
-    // setInterval(() => this.date = this.getDateByTs(Date.now()), 1000*15);
-    // setInterval(() => this.getStockLastestPrice(), 1000*15);
-    // setInterval(() => this.getStockSummaryPrice(), 1000*15);
+    setInterval(() => {
+      this.date = this.getDateByTs(Date.now());
+      this.getStockLastestPrice();
+      this.getStockSummaryPrice();
+    }, 1000*15);
+ 
     
   }
 

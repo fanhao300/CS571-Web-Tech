@@ -14,7 +14,6 @@ app.use(bodyParser.json());
 //When develop, comment these lines.
 app.use(express.static(process.cwd()+"/angular-app/dist/angular-app/"));
 
-
 //Get company infomation
 app.get('/api/company/:ticker', (req, res) => {
   let ticker=req.params.ticker;
@@ -250,16 +249,11 @@ app.get('/api/autocomplete/:query', (req, res) => {
   );
 });
 
-
-
-
-app.get('/', (req,res) => {
+app.get('*', (req,res) => {
   //When develop, comment these lines.
   //When develop, comment these lines.
-  res.send('hello world');
   res.sendFile(process.cwd()+"/angular-app/dist/angular-app/index.html")
 });
-
 
 app.listen(port, () => {
     console.log(`Server listening on the port::${port}`);

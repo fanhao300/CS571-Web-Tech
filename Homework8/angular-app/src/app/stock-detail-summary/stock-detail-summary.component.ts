@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
 
 import { StockInf, StockLatestPrice, StockGraphPrice} from '../dataFormat';
 import * as Highcharts from "highcharts/highstock";
@@ -8,12 +8,14 @@ import * as Highcharts from "highcharts/highstock";
   templateUrl: './stock-detail-summary.component.html',
   styleUrls: ['./stock-detail-summary.component.css']
 })
-export class StockDetailSummaryComponent implements OnInit {
+export class StockDetailSummaryComponent implements OnInit, OnChanges{
 
   @Input() stockInf: StockInf;
   @Input() stockLatestPrice: StockLatestPrice;
   @Input() stockSummaryPrice: StockGraphPrice[];
-  @Input() needUpdate: boolean;
+  @Input() updateParentFlag: boolean;
+
+  updateFlag: boolean = false;
 
   constructor() { }
 
@@ -77,12 +79,6 @@ export class StockDetailSummaryComponent implements OnInit {
     };
   }
 
-  chartCallback: Highcharts.ChartCallbackFunction = function (chart): void {
-    setTimeout(() => {
-     chart.reflow();
-    },0);
-  };
-
   numberWithCommas(x, isDecimal: boolean) {
     // If x cannot convert to number
     if (isNaN(Number(x))) return x;
@@ -102,9 +98,51 @@ export class StockDetailSummaryComponent implements OnInit {
     return parts.join(".");
   }
 
+  toString(a): string{
+    return JSON.stringify(a);
+  }
+
+  updateHighchart(): void{
+    let close_list = [];
+    for (let i = 0; i < this.stockSummaryPrice.length; ++i){
+        let date = this.stockSummaryPrice[i].date;
+        let time = new Date(date);
+        let ts = time.getTime()
+        close_list.push([ts, this.stockSummaryPrice[i].close]);
+    }
+
+    let color = '#ff0000';
+    if (this.stockLatestPrice.change > 0){
+      color = '#377E22';
+    }
+    else if (this.stockLatestPrice.change == 0){
+      color = '#000000';
+    }
+    
+    if (this.chartOptions && this.chartOptions.series[0].type === 'area' ){
+      this.chartOptions.series[0].color = color;
+      this.chartOptions.series[0].data = close_list;
+    }
+    this.updateParentFlag = false;
+    this.updateFlag = true;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    for (const propName in changes) {
+      if (changes.hasOwnProperty(propName)) {
+        switch (propName) {
+          case 'updateParentFlag': {
+            if (this.updateParentFlag){
+              this.updateHighchart();
+            }
+          }
+        }
+      }
+    }
+  }
+
 
   ngOnInit(): void {
     this.configHighchart();
-    // setTimeout(()=> this.needUpdate = false, 1000);
   }
 }

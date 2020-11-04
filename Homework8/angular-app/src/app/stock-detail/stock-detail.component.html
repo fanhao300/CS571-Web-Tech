@@ -93,15 +93,13 @@
             </div>
         </ng-template>
        
-        
-        <div>{{needUpdate}}</div>
         <mat-tab-group mat-align-tabs="center" animationDuration="0ms">
             <mat-tab label="Summary" class="min-tab-lable">
                 <app-stock-detail-summary 
                     [stockInf]="stockInf" 
                     [stockLatestPrice]="stockLatestPrice" 
                     [stockSummaryPrice]="stockSummaryPrice"
-                    [needUpdate]="needUpdate">
+                    [updateParentFlag]="needUpdate">
                 </app-stock-detail-summary>
             </mat-tab>
             <mat-tab label="Top news" class="col-4">  
