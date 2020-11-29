@@ -8,34 +8,34 @@
 import SwiftUI
 
 struct HomeScreenView: View {
-    var favoriteStocks: [StockIntro] = []
-    var portfolioStocks: [StockIntro] = []
+    @StateObject var data: HomeScreenData;
     
     var body: some View {
         NavigationView {
             List {
-                Text("November 23, 2020")
+                Text(data.date)
                     .font(/*@START_MENU_TOKEN@*/.title2/*@END_MENU_TOKEN@*/)
                     .fontWeight(.bold)
                     .foregroundColor(Color.gray)
-                
+
                 Text("PORTFOLIO")
                     .font(.subheadline)
                     .fontWeight(.semibold)
                     .padding(.vertical, -2.0)
                     .listRowBackground(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
-                
+
                 VStack(alignment: .leading) {
                     Text("Net Worth")
                         .font(.title2)
-                    Text("20000.00")
+                    Text(data.netWorth)
                         .font(/*@START_MENU_TOKEN@*/.title2/*@END_MENU_TOKEN@*/)
                         .fontWeight(.bold)
                 }
-                
-                ForEach(portfolioStocks) { stock in
+
+                ForEach(data.portfolioStocks) { stock in
                     Stockcell(stock: stock)
                 }
+                .onMove(perform: data.movePortfolioStock)
                 
                 
                 Text("FAVORITES")
@@ -43,19 +43,27 @@ struct HomeScreenView: View {
                     .fontWeight(.semibold)
                     .padding(.vertical, -2.0)
                     .listRowBackground(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
-                ForEach(favoriteStocks) { stock in
+                
+                ForEach(data.favoriteStocks) { stock in
                     Stockcell(stock: stock)
                 }
-                
+                .onDelete(perform: data.deleteFavoriteStock)
+                .onMove(perform: data.moveFavoriteStock)
             }
             .environment(\.defaultMinListRowHeight, 5)
             .navigationTitle("Stocks")
+            .toolbar{
+                ToolbarItem(placement: .navigationBarTrailing){
+                    EditButton()
+                }
+            }
         }
     }
 }
 
 struct Stockcell: View {
-    var stock: StockIntro
+    var stock: StockInfo
+    
     var body: some View {
         NavigationLink(destination: Text(stock.ticker)) {
             VStack(alignment: .leading) {
@@ -81,35 +89,35 @@ struct Stockcell: View {
             }
             Spacer()
             VStack(alignment: .trailing) {
-                Text(stock.lastPrice)
+                Text(stock.lastPrice!)
                     .fontWeight(.bold)
                 
-                if (Double(stock.change)! < 0){
+                if (Double(stock.change!)! < 0){
                     HStack {
                         Image(systemName: "arrow.down.right")
                             .foregroundColor(.red)
                             .padding(.trailing, 2.0)
                             .font(.system(size: 13.0))
                         
-                        Text(stock.change)
+                        Text(stock.change!)
                             .font(.subheadline)
                             .foregroundColor(.red)
                     }
                 }
-                else if (Double(stock.change)! > 0){
+                else if (Double(stock.change!)! > 0){
                     HStack {
                         Image(systemName: "arrow.up.right")
                             .foregroundColor(.green)
                             .padding(.trailing, 2.0)
                             .font(.system(size: 13.0))
                         
-                        Text(stock.change)
+                        Text(stock.change!)
                             .font(.subheadline)
                             .foregroundColor(.green)
                     }
                 }
                 else {
-                    Text(stock.change)
+                    Text(stock.change!)
                         .font(.subheadline)
                     
                 }
@@ -121,6 +129,6 @@ struct Stockcell: View {
 
 struct HomeScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeScreenView(favoriteStocks: favoriteStocks, portfolioStocks: portfolioStocks)
+        HomeScreenView(data: HomeScreenData())
     }
 }

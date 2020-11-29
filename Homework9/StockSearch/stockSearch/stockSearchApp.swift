@@ -11,7 +11,7 @@ import SwiftUI
 struct StockSearchApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeScreenView()
+            HomeScreenView(data: HomeScreenData())
         }
     }
 }

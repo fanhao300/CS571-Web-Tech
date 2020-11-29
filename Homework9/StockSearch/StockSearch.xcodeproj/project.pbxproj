@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A71D31982564EC1F0051337C /* RequstDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D31972564EC1F0051337C /* RequstDate.swift */; };
+		A71D319D256F6B560051337C /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D319C256F6B560051337C /* SwiftUIView.swift */; };
 		A73DFE89255E535200A61FA8 /* StockSearchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73DFE88255E535200A61FA8 /* StockSearchApp.swift */; };
 		A73DFE8D255E535300A61FA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A73DFE8C255E535300A61FA8 /* Assets.xcassets */; };
 		A73DFE90255E535300A61FA8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A73DFE8F255E535300A61FA8 /* Preview Assets.xcassets */; };
@@ -34,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A71D31972564EC1F0051337C /* RequstDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequstDate.swift; sourceTree = "<group>"; };
+		A71D319C256F6B560051337C /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		A73DFE85255E535200A61FA8 /* StockSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StockSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A73DFE88255E535200A61FA8 /* StockSearchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockSearchApp.swift; sourceTree = "<group>"; };
 		A73DFE8C255E535300A61FA8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -100,7 +104,9 @@
 				A73DFE88255E535200A61FA8 /* StockSearchApp.swift */,
 				A73DFE8C255E535300A61FA8 /* Assets.xcassets */,
 				A73DFEBB255E539100A61FA8 /* HomeScreenView.swift */,
+				A71D319C256F6B560051337C /* SwiftUIView.swift */,
 				A73DFEB6255E536100A61FA8 /* DataManage.swift */,
+				A71D31972564EC1F0051337C /* RequstDate.swift */,
 				A73DFE91255E535300A61FA8 /* Info.plist */,
 				A73DFE8E255E535300A61FA8 /* Preview Content */,
 			);
@@ -263,8 +269,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A73DFEB7255E536100A61FA8 /* DataManage.swift in Sources */,
+				A71D31982564EC1F0051337C /* RequstDate.swift in Sources */,
 				A73DFE89255E535200A61FA8 /* StockSearchApp.swift in Sources */,
 				A73DFEBC255E539100A61FA8 /* HomeScreenView.swift in Sources */,
+				A71D319D256F6B560051337C /* SwiftUIView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
