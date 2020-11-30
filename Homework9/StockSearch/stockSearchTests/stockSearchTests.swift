@@ -21,7 +21,7 @@ class StockSearchTests: XCTestCase {
     func testExample1() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        let a = HomeScreenData()
+//        let a = HomeScreenData()
     }
 
     func testPerformanceExample() throws {

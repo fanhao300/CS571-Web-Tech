@@ -6,62 +6,105 @@
 //
 
 import SwiftUI
+import Alamofire
+import SwiftyJSON
 
 struct HomeScreenView: View {
     @StateObject var data: HomeScreenData;
+    @ObservedObject var searchBar: SearchBar = SearchBar()
+    @State var autoComplete = [AutoCompleteData]()
     
+    @State var timestampRecord: Double = 0
+
     var body: some View {
         if data.isFinish {
             NavigationView {
                 List {
-                    Text(data.date)
-                        .font(/*@START_MENU_TOKEN@*/.title2/*@END_MENU_TOKEN@*/)
-                        .fontWeight(.bold)
-                        .foregroundColor(Color.gray)
-
-                    Text("PORTFOLIO")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .padding(.vertical, -2.0)
-                        .listRowBackground(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
-
-                    VStack(alignment: .leading) {
-                        Text("Net Worth")
-                            .font(.title2)
-                        Text(data.netWorth)
+                    if searchBar.text.isEmpty {
+                        Text(data.date)
                             .font(/*@START_MENU_TOKEN@*/.title2/*@END_MENU_TOKEN@*/)
                             .fontWeight(.bold)
-                    }
+                            .foregroundColor(Color.gray)
 
-                    ForEach(data.portfolioStocks) { stock in
-                        Stockcell(stock: stock)
+                        Section(header: Text("PORTFOLIO")){
+                            VStack(alignment: .leading) {
+                                Text("Net Worth")
+                                    .font(.title2)
+                                Text(data.netWorth)
+                                    .font(/*@START_MENU_TOKEN@*/.title2/*@END_MENU_TOKEN@*/)
+                                    .fontWeight(.bold)
+                            }
+                            ForEach(data.portfolioStocks) { stock in
+                                Stockcell(stock: stock)
+                            }
+                            .onMove(perform: data.movePortfolioStock)
+                        }
+                        
+                        Section(header: Text("FAVORITES")){
+                            ForEach(data.favoriteStocks) { stock in
+                                Stockcell(stock: stock)
+                            }
+                            .onDelete(perform: data.deleteFavoriteStock)
+                            .onMove(perform: data.moveFavoriteStock)
+                            
+                        }
+                        HStack {
+                            Spacer()
+                            Link("Powered by Tiingo",
+                                destination: URL(string: "https://www.tiingo.com")!)
+                                .font(.footnote)
+                                .foregroundColor(Color.gray)
+                            Spacer()
+                        }
                     }
-                    .onMove(perform: data.movePortfolioStock)
-                    
-                    
-                    Text("FAVORITES")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .padding(.vertical, -2.0)
-                        .listRowBackground(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
-                    
-                    ForEach(data.favoriteStocks) { stock in
-                        Stockcell(stock: stock)
+                    else {
+                        if searchBar.text.count >= 3{
+                            SearchView(autoComplete: autoComplete)
+                        }
                     }
-                    .onDelete(perform: data.deleteFavoriteStock)
-                    .onMove(perform: data.moveFavoriteStock)
                 }
-                .environment(\.defaultMinListRowHeight, 5)
                 .navigationTitle("Stocks")
+                .add(self.searchBar)
                 .toolbar{
                     ToolbarItem(placement: .navigationBarTrailing){
                         EditButton()
                     }
                 }
+                .onChange(of: searchBar.text, perform: { value in
+                    self.timestampRecord = Date().timeIntervalSince1970
+                    if searchBar.text.count >= 3{
+                        let debouncer = Debouncer(delay: 0.5)
+                        debouncer.run(action: {
+                            loadData(value: value)
+                        })
+                    }
+                    else {
+                        self.autoComplete = []
+                    }
+                })
             }
         }
         else {
             loadingView()
+        }
+    }
+    
+    
+    func loadData(value: String) {
+        let timestampNow = Date().timeIntervalSince1970
+        if timestampNow - timestampRecord > 0.5 && timestampNow - timestampRecord < 0.6{
+            let url = "http://ttxhzz.us-east-1.elasticbeanstalk.com/api/autocomplete/" + value
+            AF.request(url).validate().responseJSON{ (response) in
+                if let data = response.data {
+                    let json = JSON(data)
+                    var stocksArray: [AutoCompleteData] = []
+                    for (_,jsStock):(String, JSON) in json{
+                        let stock = AutoCompleteData(ticker: jsStock["ticker"].stringValue, company: jsStock["name"].stringValue)
+                        stocksArray.append(stock)
+                    }
+                    self.autoComplete = stocksArray
+                }
+            }
         }
     }
 }

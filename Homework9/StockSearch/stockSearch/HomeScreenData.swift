@@ -126,9 +126,9 @@ class HomeScreenData: ObservableObject{
     init(){
         //If want to reset userDefalut, uncomment these lines
         
-//        if let appDomain = Bundle.main.bundleIdentifier {
-//            UserDefaults.standard.removePersistentDomain(forName: appDomain)
-//        }
+        if let appDomain = Bundle.main.bundleIdentifier {
+            UserDefaults.standard.removePersistentDomain(forName: appDomain)
+        }
         
         self.date = HomeScreenData.updateDate()
         
@@ -160,9 +160,6 @@ class HomeScreenData: ObservableObject{
                 print(self.favoriteStocks)
             }
         }
-        
-        
-        
     }
     
     
