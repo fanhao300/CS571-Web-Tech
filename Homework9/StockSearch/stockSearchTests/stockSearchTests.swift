@@ -18,9 +18,10 @@ class StockSearchTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
+    func testExample1() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        let a = HomeScreenData()
     }
 
     func testPerformanceExample() throws {

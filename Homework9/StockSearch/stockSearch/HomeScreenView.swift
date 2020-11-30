@@ -11,52 +11,57 @@ struct HomeScreenView: View {
     @StateObject var data: HomeScreenData;
     
     var body: some View {
-        NavigationView {
-            List {
-                Text(data.date)
-                    .font(/*@START_MENU_TOKEN@*/.title2/*@END_MENU_TOKEN@*/)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color.gray)
-
-                Text("PORTFOLIO")
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .padding(.vertical, -2.0)
-                    .listRowBackground(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
-
-                VStack(alignment: .leading) {
-                    Text("Net Worth")
-                        .font(.title2)
-                    Text(data.netWorth)
+        if data.isFinish {
+            NavigationView {
+                List {
+                    Text(data.date)
                         .font(/*@START_MENU_TOKEN@*/.title2/*@END_MENU_TOKEN@*/)
                         .fontWeight(.bold)
-                }
+                        .foregroundColor(Color.gray)
 
-                ForEach(data.portfolioStocks) { stock in
-                    Stockcell(stock: stock)
+                    Text("PORTFOLIO")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .padding(.vertical, -2.0)
+                        .listRowBackground(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
+
+                    VStack(alignment: .leading) {
+                        Text("Net Worth")
+                            .font(.title2)
+                        Text(data.netWorth)
+                            .font(/*@START_MENU_TOKEN@*/.title2/*@END_MENU_TOKEN@*/)
+                            .fontWeight(.bold)
+                    }
+
+                    ForEach(data.portfolioStocks) { stock in
+                        Stockcell(stock: stock)
+                    }
+                    .onMove(perform: data.movePortfolioStock)
+                    
+                    
+                    Text("FAVORITES")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .padding(.vertical, -2.0)
+                        .listRowBackground(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
+                    
+                    ForEach(data.favoriteStocks) { stock in
+                        Stockcell(stock: stock)
+                    }
+                    .onDelete(perform: data.deleteFavoriteStock)
+                    .onMove(perform: data.moveFavoriteStock)
                 }
-                .onMove(perform: data.movePortfolioStock)
-                
-                
-                Text("FAVORITES")
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .padding(.vertical, -2.0)
-                    .listRowBackground(Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 1.0))
-                
-                ForEach(data.favoriteStocks) { stock in
-                    Stockcell(stock: stock)
+                .environment(\.defaultMinListRowHeight, 5)
+                .navigationTitle("Stocks")
+                .toolbar{
+                    ToolbarItem(placement: .navigationBarTrailing){
+                        EditButton()
+                    }
                 }
-                .onDelete(perform: data.deleteFavoriteStock)
-                .onMove(perform: data.moveFavoriteStock)
             }
-            .environment(\.defaultMinListRowHeight, 5)
-            .navigationTitle("Stocks")
-            .toolbar{
-                ToolbarItem(placement: .navigationBarTrailing){
-                    EditButton()
-                }
-            }
+        }
+        else {
+            loadingView()
         }
     }
 }
