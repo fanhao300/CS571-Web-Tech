@@ -24,14 +24,14 @@ struct StockDetail_Portfolio: View {
                 
                 if portfolio.isOwned {
                     VStack(spacing: 15) {
-                        Text(String(format: "Shares Owned: %.4f", portfolio.ownedShares))
+                        Text(String(format: "Shares Owned: %.4f", portfolio.stockInfo.sharesNum!))
                             .font(.body)
                         
                         Text(String(format: "Market Value: $%.2f", portfolio.marketValue))
                             .font(.body)
                     }
                 } else {
-                    Text("You have 0 shares of \(portfolio.ticker).\nStart trading!")
+                    Text("You have 0 shares of \(portfolio.stockInfo.ticker).\nStart trading!")
                 }
                 
                 Spacer()
@@ -67,8 +67,8 @@ struct StockDetail_Portfolio: View {
     }
 }
 
-struct StockDetail_Portfolio_Previews: PreviewProvider {
-    static var previews: some View {
-        StockDetail_Portfolio(portfolio: myFooStockDetail)
-    }
-}
+//struct StockDetail_Portfolio_Previews: PreviewProvider {
+//    static var previews: some View {
+//        StockDetail_Portfolio(portfolio: myFooStockDetail)
+//    }
+//}

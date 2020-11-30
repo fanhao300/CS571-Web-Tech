@@ -9,21 +9,26 @@ import SwiftUI
 
 struct StockDetailView: View {
     //TODO: change to @Binding
-    let stockInfo: StockInfo
-    let portfolio: StockDetail
+    @StateObject var stockDetail: StockDetail
+    @EnvironmentObject var data: HomeScreenData
 
     var body: some View {
-        ScrollView {
-            VStack {
-                StockDetail_Header(stockInfo: stockInfo)
-                
-                StockDetail_Highcharts()
-                
-                StockDetail_Portfolio(portfolio: portfolio)
-                
-                StockDetail_About(about: portfolio.about)
+        if stockDetail.isGetCompany && stockDetail.isGetLatestPrice{
+            ScrollView {
+                VStack {
+                    StockDetail_Header(stockInfo: stockDetail.stockInfo)
+                    
+                    StockDetail_Highcharts()
+                    
+                    StockDetail_Portfolio(portfolio: stockDetail)
+                    
+                    StockDetail_About(about: stockDetail.about)
+                }
+                .padding()
             }
-            .padding()
+        }
+        else {
+            loadingView()
         }
         
     }
@@ -31,6 +36,6 @@ struct StockDetailView: View {
 
 struct StockDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        StockDetailView(stockInfo: StockInfo(ticker: "AAPL", company: "Apple Inc", lastPrice: "345.678", change: "2.34", sharesNum: "2.3"), portfolio: myFooStockDetail)
+        StockDetailView(stockDetail: StockDetail(ticker: "AAPL"))
     }
 }

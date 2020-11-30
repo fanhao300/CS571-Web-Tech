@@ -6,31 +6,35 @@
 //
 
 import Foundation
+import Alamofire
+import SwiftyJSON
 
-struct StockDetail {
-    let ticker: String
-    let company: String
-    let about: String
+class StockDetail: ObservableObject{
+    @Published var stockInfo = StockInfo(ticker:"default", company: "defalut")
     
-    let ownedShares: Double
-    let priceCurrent: Double
-    let priceOpen: Double
-    let priceHigh: Double
-    let priceLow: Double
-    let priceMid: Double
-    let priceBid: Double
-    let volume: Int
+    @Published var about: String = ""
 
-    var marketValue: Double {
-        self.ownedShares * self.priceCurrent
-    }
-    var isOwned: Bool {
-        self.ownedShares > 0
-    }
+    @Published var priceOpen: Double = 0
+    @Published var priceHigh: Double = 0
+    @Published var priceLow: Double = 0
+    @Published var priceMid: Double = 0
+    @Published var priceBid: Double = 0
+    @Published var volume: Int = 0
+
+    @Published var marketValue: Double = 0
+//    {
+//        self.stockInfo.sharesNum! * self.priceCurrent
+//    }
+    @Published var isOwned: Bool = false
+    @Published var isFavorite: Bool = false
+    var isGetCompany: Bool = false
+    var isGetLatestPrice: Bool = false
+    var isGetHistoricalPrice: Bool = false
+    var isGetNews: Bool = false
     
     var statsList: [String] {
         [
-            String(format: "Current Price: %.2f", self.priceCurrent),
+            String(format: "Current Price: %.2f", self.stockInfo.lastPrice!),
             String(format: "Open Price: %.2f", self.priceOpen),
             String(format: "High Price: %.2f", self.priceHigh),
             String(format: "Low Price: %.2f", self.priceLow),
@@ -38,6 +42,65 @@ struct StockDetail {
             String("Volume: \(self.volume.formattedWithSeparator)"),
             String(format: "Bid Price: %.2f", self.priceBid)
         ]
+    }
+    
+    init (ticker: String){
+        self.stockInfo.ticker = ticker
+        //Fetch data
+        //1. stocks company information
+        var url = "http://ttxhzz.us-east-1.elasticbeanstalk.com/api/company/\(ticker)"
+        AF.request(url).validate().responseJSON{ (response) in
+            if let data = response.data {
+                let json = JSON(data)
+                print(json)
+                self.stockInfo.company = json["name"].stringValue
+                self.about = json["description"].stringValue
+                self.isGetCompany.toggle()
+            }
+        }
+        
+        //2. stock lastest price information
+        url = "http://ttxhzz.us-east-1.elasticbeanstalk.com/api/stock/latest/\(ticker)"
+        AF.request(url).validate().responseJSON{ (response) in
+            if let data = response.data {
+                let json = JSON(data)
+                print(json)
+                self.stockInfo.change = json["change"].doubleValue
+                self.stockInfo.lastPrice = json["last"].doubleValue
+                self.priceOpen = json["open"].doubleValue
+                self.priceHigh = json["high"].doubleValue
+                self.priceLow = json["low"].doubleValue
+                self.priceMid = json["mid"].doubleValue
+                self.priceBid = json["bidPrice"].doubleValue
+                self.volume = json["volume"].intValue
+                self.isGetLatestPrice.toggle()
+            }
+        }
+        //TODO: 3. news
+        //TODO: 4. historial data
+        
+        //5. stock buys and favorite(by chenking userdefalut)
+        let favStockStorage = HomeScreenData.getStocksInUserDefault(type: "favorite", defaultData: [])
+        let sharesStorage = HomeScreenData.getStocksInUserDefault(type: "shares", defaultData: [])
+        
+        for stock in favStockStorage{
+            if ticker == stock.ticker{
+                self.isFavorite = true
+                break
+            }
+        }
+        
+        for stock in sharesStorage{
+            if ticker == stock.ticker{
+                self.isOwned = true
+                self.stockInfo.sharesNum = stock.shares
+                self.marketValue = self.stockInfo.sharesNum! * self.stockInfo.lastPrice!
+            }
+        }
+        
+        
+        
+        
     }
 }
 
@@ -54,8 +117,3 @@ extension Numeric {
     var formattedWithSeparator: String { Formatter.withSeparator.string(for: self) ?? "" }
 }
 
-let myFooStockDetail = StockDetail(
-    ticker: "AAPL", company: "Apple Inc", about: "Apple Inc. (Apple) designs, manufactures and markets mobile communication and media devices, personal computers, and portable digital music players, and a variety of related software, services, peripherals, networking solutions, and third-party digital content and applications. The Company's products and services include iPhone, iPad, Mac, iPod, Apple TV, a portfolio of consumer and professional software applications, the iOS and OS X operating systems, iCloud, and a variety of accessory, service and support offerings. The Company also delivers digital content and applications through the iTunes Store, App StoreSM, iBookstoreSM, and Mac App Store. The Company distributes its products worldwide through its retail stores, online stores, and direct sales force, as well as through third-party cellular network carriers, wholesalers, retailers, and value-added resellers. In February 2012, the Company acquired app-search engine Chomp. ",
-    ownedShares: 10, priceCurrent: 204.72,
-    priceOpen: 204.07, priceHigh:333.2, priceLow: 203.37, priceMid: 0.00,
-    priceBid: 0.00, volume: 51195593)

@@ -25,7 +25,7 @@ struct StockDetail_Header: View {
                     Text("$\(stockInfo.lastPrice!)") //TODO: handel nil condition
                         .font(.title)
                     
-                    renderPriceChanged(stockInfo.change!)
+                    renderPriceChanged(String(format: "%.2f", stockInfo.change!))
                         .font(.title3)
 //                    switch Double(stockInfo.change!) {
 //                    case let change where change < 0:
@@ -63,7 +63,7 @@ struct StockDetail_Header: View {
 
 struct StockDetail_Header_Previews: PreviewProvider {
     static var previews: some View {
-        let test = StockInfo(ticker: "AAPL", company: "Apple Inc", lastPrice: "345.678", change: "-2.33", sharesNum: "2.3")
+        let test = StockInfo(ticker: "AAPL", company: "Apple Inc", lastPrice: 345.678, change: -2.33, sharesNum: 2.3)
         StockDetail_Header(stockInfo: test)
     }
 }

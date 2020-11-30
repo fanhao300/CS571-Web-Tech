@@ -82,7 +82,7 @@ class HomeScreenData: ObservableObject{
     
     
     
-    private func getStocksInUserDefault(type: String, defaultData:[StockStorage]) -> [StockStorage]{
+    static public func getStocksInUserDefault(type: String, defaultData:[StockStorage]) -> [StockStorage]{
         let savedStocks = UserDefaults.standard.object(forKey: type)
         var ret: [StockStorage] = defaultData
         print(type)
@@ -102,8 +102,8 @@ class HomeScreenData: ObservableObject{
             for (_,jsStock):(String, JSON) in json {
                 let ticker = jsStock["ticker"].stringValue
                 if ticker == stock.ticker{
-                    let lastPrice = String(format: "%.2f", jsStock["last"].doubleValue)
-                    let change = String(format: "%.2f", jsStock["change"].doubleValue)
+                    let lastPrice = jsStock["last"].doubleValue
+                    let change = jsStock["change"].doubleValue
                     let stockInfo = StockInfo(ticker: ticker, company: stock.company, lastPrice: lastPrice, change: change)
                     ret.append(stockInfo)
                     break
@@ -115,7 +115,7 @@ class HomeScreenData: ObservableObject{
             for stockStorage in shares{
                 if stock.ticker == stockStorage.ticker{
                     let shares = stockStorage.shares
-                    ret[index].sharesNum = String(format: "%.2f", shares)
+                    ret[index].sharesNum = shares
                 }
             }
         }
@@ -133,9 +133,9 @@ class HomeScreenData: ObservableObject{
         self.date = HomeScreenData.updateDate()
         
         //Get stocks from userDefault
-        let favStockStorage = getStocksInUserDefault(type: "favorite", defaultData: HomeScreenData.defaultFavStocks)
-        let portStocksStorage = getStocksInUserDefault(type: "portfolio", defaultData: HomeScreenData.defaultPortStocks)
-        let sharesStorage = getStocksInUserDefault(type: "shares", defaultData: HomeScreenData.defaultBoughtStocks)
+        let favStockStorage = HomeScreenData.getStocksInUserDefault(type: "favorite", defaultData: HomeScreenData.defaultFavStocks)
+        let portStocksStorage = HomeScreenData.getStocksInUserDefault(type: "portfolio", defaultData: HomeScreenData.defaultPortStocks)
+        let sharesStorage = HomeScreenData.getStocksInUserDefault(type: "shares", defaultData: HomeScreenData.defaultBoughtStocks)
         
         //get all tickers from userDefault
         var tickers = ""

@@ -26,7 +26,7 @@ struct StockDetail_TradeSheet: View {
                 Spacer()
             }.padding()
             
-            Text("Trade \(portfolio.company) shares")
+            Text("Trade \(portfolio.stockInfo.company) shares")
                 .font(.caption)
                 .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
             
@@ -42,13 +42,13 @@ struct StockDetail_TradeSheet: View {
                         .font(.largeTitle)
                 }
                 
-                Text(String(format: "x $%.2f/share = $%.2f", portfolio.priceCurrent, portfolio.priceCurrent * Double(sharesToBuy)!))
+                Text(String(format: "x $%.2f/share = $%.2f", portfolio.stockInfo.sharesNum!, portfolio.stockInfo.sharesNum! * Double(sharesToBuy)!))
             }
             
             Spacer()
             
             VStack(spacing: 15) {
-                Text("$12345.67 available to buy \(portfolio.ticker)")
+                Text("$12345.67 available to buy \(portfolio.stockInfo.ticker)")
                     .font(.caption2)
                     .foregroundColor(.gray)
                 
@@ -73,8 +73,8 @@ struct StockDetail_TradeSheet: View {
     }
 }
 
-struct StockDetail_TradeSheet_Previews: PreviewProvider {
-    static var previews: some View {
-        StockDetail_TradeSheet(portfolio: myFooStockDetail)
-    }
-}
+//struct StockDetail_TradeSheet_Previews: PreviewProvider {
+//    static var previews: some View {
+//        StockDetail_TradeSheet(portfolio: myFooStockDetail)
+//    }
+//}

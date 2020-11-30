@@ -30,8 +30,8 @@ struct StockDetail_About: View {
     }
 }
 
-struct StockDetail_About_Previews: PreviewProvider {
-    static var previews: some View {
-        StockDetail_About(about: myFooStockDetail.about)
-    }
-}
+//struct StockDetail_About_Previews: PreviewProvider {
+//    static var previews: some View {
+//        StockDetail_About(about: myFooStockDetail.about)
+//    }
+//}

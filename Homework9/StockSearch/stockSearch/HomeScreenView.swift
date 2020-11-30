@@ -10,7 +10,7 @@ import Alamofire
 import SwiftyJSON
 
 struct HomeScreenView: View {
-    @StateObject var data: HomeScreenData;
+    @EnvironmentObject var data: HomeScreenData;
     @ObservedObject var searchBar: SearchBar = SearchBar()
     @State var autoComplete = [AutoCompleteData]()
     
@@ -113,18 +113,20 @@ struct Stockcell: View {
     var stock: StockInfo
     
     var body: some View {
-        NavigationLink(destination: Text(stock.ticker)) {
+        NavigationLink(
+            destination: StockDetailView(stockDetail: StockDetail(ticker: stock.ticker))
+            ) {
             VStack(alignment: .leading) {
                 Text(stock.ticker)
                     .fontWeight(.bold)
                 if stock.sharesNum != nil {
-                    if (Double(stock.sharesNum!)! > 1) {
-                        Text(stock.sharesNum! + " shares")
+                    if (stock.sharesNum! > 1) {
+                        Text(String(format: "%.2f", stock.sharesNum!) + " shares")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
                     else {
-                        Text(stock.sharesNum! + " share")
+                        Text(String(format: "%.2f", stock.sharesNum!) + " shares")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
@@ -137,37 +139,36 @@ struct Stockcell: View {
             }
             Spacer()
             VStack(alignment: .trailing) {
-                Text(stock.lastPrice!)
+                Text(String(format: "%.2f", stock.lastPrice!))
                     .fontWeight(.bold)
-                
-                if (Double(stock.change!)! < 0){
+                if (stock.change! < 0){
                     HStack {
                         Image(systemName: "arrow.down.right")
                             .foregroundColor(.red)
                             .padding(.trailing, 2.0)
                             .font(.system(size: 13.0))
-                        
-                        Text(stock.change!)
+
+                        Text(String(format: "%.2f", stock.change!))
                             .font(.subheadline)
                             .foregroundColor(.red)
                     }
                 }
-                else if (Double(stock.change!)! > 0){
+                else if (stock.change! > 0){
                     HStack {
                         Image(systemName: "arrow.up.right")
                             .foregroundColor(.green)
                             .padding(.trailing, 2.0)
                             .font(.system(size: 13.0))
-                        
-                        Text(stock.change!)
+
+                        Text(String(format: "%.2f", stock.change!))
                             .font(.subheadline)
                             .foregroundColor(.green)
                     }
                 }
                 else {
-                    Text(stock.change!)
+                    Text(String(format: "%.2f", stock.change!))
                         .font(.subheadline)
-                    
+
                 }
             }
         }
@@ -177,6 +178,7 @@ struct Stockcell: View {
 
 struct HomeScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeScreenView(data: HomeScreenData())
+        HomeScreenView()
+            .environmentObject(HomeScreenData())
     }
 }

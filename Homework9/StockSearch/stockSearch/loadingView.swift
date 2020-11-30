@@ -22,9 +22,6 @@ struct loadingView: View {
 
 struct loadingView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            loadingView()
-            loadingView()
-        }
+        loadingView()
     }
 }
