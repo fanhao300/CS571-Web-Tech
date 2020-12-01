@@ -13,16 +13,17 @@ struct StockDetail_Header: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(stockInfo.ticker)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
+//                Text(stockInfo.ticker)
+//                    .font(.largeTitle)
+//                    .fontWeight(.bold)
+                
                 
                 Text(stockInfo.company)
                     .font(.subheadline)
                     .foregroundColor(.gray)
                 
                 HStack {
-                    Text("$\(stockInfo.lastPrice!)") //TODO: handel nil condition
+                    Text(String(format: "$%.2f", stockInfo.lastPrice!))
                         .font(.title)
                     
                     renderPriceChanged(String(format: "%.2f", stockInfo.change!))
