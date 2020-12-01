@@ -57,28 +57,16 @@ struct WebView: UIViewRepresentable {
     }
 }
 
-struct Display: View {
+struct Highchart: View {
     @State var title: String = ""
     @State var error: Error? = nil
+    var ticker: String
 
     var body: some View {
-        WebView(title: $title, url: URL(string: "file:///Users/haofan/Desktop/CSCI%20571/Lab/Homework9/StockSearch/StockSearch/Highchart/highchart.html")!)
+        WebView(title: $title, url: URL(string: "file:///Users/haofan/Desktop/CSCI%20571/Lab/Homework9/StockSearch/StockSearch/Highchart/highchart.html?ticker=\(ticker)")!)
             .onLoadStatusChanged { loading, error in
                 if loading {
-                    print("Loading started")
                     self.title = "Loading…"
-                }
-                else {
-                    print("Done loading.")
-                    if let error = error {
-                        self.error = error
-                        if self.title.isEmpty {
-                            self.title = "Error"
-                        }
-                    }
-                    else if self.title.isEmpty {
-                        self.title = "Some Place"
-                    }
                 }
         }
         
@@ -87,6 +75,7 @@ struct Display: View {
 
 struct WebView_Previews: PreviewProvider {
     static var previews: some View {
-        Display()
+//        Highchart(isFinishLoading: .constant(true))
+        Highchart(ticker:"baba")
     }
 }

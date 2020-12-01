@@ -26,7 +26,6 @@ class StockDetail: ObservableObject{
     @Published var newsList = [News]()
     var isGetCompany: Bool = false
     var isGetLatestPrice: Bool = false
-    var isGetHistoricalPrice: Bool = false
     var isGetNews: Bool = false
     
     var statsList: [String]{
@@ -116,9 +115,6 @@ class StockDetail: ObservableObject{
                 self.isGetNews.toggle()
             }
         }
-        //TODO: 5. historial data
-        
-        
     }
 }
 

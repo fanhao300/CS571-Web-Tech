@@ -11,7 +11,10 @@ struct StockDetail_Portfolio: View {
     @EnvironmentObject var stockDetail: StockDetail
     @EnvironmentObject var data: HomeScreenData
     @State var showTradeSheet: Bool = false
-
+    @State var showCongrtulationSheet: Bool = false
+    @State var sharesCount: String = ""
+    @State var type: String = ""
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
             HStack {
@@ -53,15 +56,24 @@ struct StockDetail_Portfolio: View {
                     }
                 }
             }
-            .frame(width: .infinity, height: 100)
+            .frame(height: 100)
         }
         .sheet(isPresented: $showTradeSheet, content: {
-            StockDetail_TradeSheet(showSheet: $showTradeSheet)
+            if showCongrtulationSheet {
+                StockDetail_CongratulationSheet(
+                    transactoin_type: type,
+                    ticker: stockDetail.stockInfo.ticker,
+                    num: $sharesCount,
+                    showSheet: $showTradeSheet,
+                    showCongrtulationSheet: $showCongrtulationSheet)
+            }
+            else {
+                StockDetail_TradeSheet(
+                    sharesCount: $sharesCount,
+                    type: $type,
+                    showSheet: $showTradeSheet,
+                    showCongrtulationSheet: $showCongrtulationSheet)
+            }
         })
     }
 }
-//struct StockDetail_Portfolio_Previews: PreviewProvider {
-//    static var previews: some View {
-//        StockDetail_Portfolio(portfolio: myFooStockDetail)
-//    }
-//}
