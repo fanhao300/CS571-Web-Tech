@@ -30,7 +30,7 @@ struct HomeScreenView: View {
                             VStack(alignment: .leading) {
                                 Text("Net Worth")
                                     .font(.title2)
-                                Text(data.netWorth)
+                                Text(String(format: "%.2f", data.netWorth))
                                     .font(/*@START_MENU_TOKEN@*/.title2/*@END_MENU_TOKEN@*/)
                                     .fontWeight(.bold)
                             }
@@ -110,7 +110,7 @@ struct HomeScreenView: View {
 }
 
 struct Stockcell: View {
-    var stock: StockInfo
+    @StateObject var stock: StockInfo
     
     var body: some View {
         NavigationLink(
@@ -119,14 +119,14 @@ struct Stockcell: View {
             VStack(alignment: .leading) {
                 Text(stock.ticker)
                     .fontWeight(.bold)
-                if stock.sharesNum != nil {
-                    if (stock.sharesNum! > 1) {
-                        Text(String(format: "%.2f", stock.sharesNum!) + " shares")
+                if stock.sharesNum > 0 {
+                    if (stock.sharesNum - 1 < 0.000001) {
+                        Text(String(format: "%.2f", stock.sharesNum) + " share")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
                     else {
-                        Text(String(format: "%.2f", stock.sharesNum!) + " shares")
+                        Text(String(format: "%.2f", stock.sharesNum) + " shares")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }

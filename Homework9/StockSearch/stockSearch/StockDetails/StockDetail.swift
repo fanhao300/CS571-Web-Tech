@@ -20,34 +20,44 @@ class StockDetail: ObservableObject{
     @Published var priceMid: Double = 0
     @Published var priceBid: Double = 0
     @Published var volume: Int = 0
-
     @Published var marketValue: Double = 0
-//    {
-//        self.stockInfo.sharesNum! * self.priceCurrent
-//    }
     @Published var isOwned: Bool = false
     @Published var isFavorite: Bool = false
+    @Published var newsList = [News]()
     var isGetCompany: Bool = false
     var isGetLatestPrice: Bool = false
     var isGetHistoricalPrice: Bool = false
     var isGetNews: Bool = false
     
-    var statsList: [String] {
+    var statsList: [String]{
         [
-            String(format: "Current Price: %.2f", self.stockInfo.lastPrice!),
-            String(format: "Open Price: %.2f", self.priceOpen),
-            String(format: "High Price: %.2f", self.priceHigh),
-            String(format: "Low Price: %.2f", self.priceLow),
-            String(format: "Mid Price: %.2f", self.priceMid),
-            String("Volume: \(self.volume.formattedWithSeparator)"),
-            String(format: "Bid Price: %.2f", self.priceBid)
+                String(format: "Current Price: %.2f", self.stockInfo.lastPrice!),
+                String(format: "Open Price: %.2f", self.priceOpen),
+                String(format: "High Price: %.2f", self.priceHigh),
+                String(format: "Low Price: %.2f", self.priceLow),
+                String(format: "Mid Price: %.2f", self.priceMid),
+                String("Volume: \(self.volume.formattedWithSeparator)"),
+                String(format: "Bid Price: %.2f", self.priceBid)
         ]
     }
     
     init (ticker: String){
         self.stockInfo.ticker = ticker
+        
+        //1. stock shares and favorite(by chenking userdefalut)
+        //stock shares update in the third step.
+        let favStockStorage = HomeScreenData.getStocksInUserDefault(type: "favorite", defaultData: [])
+        let sharesStorage = HomeScreenData.getStocksInUserDefault(type: "shares", defaultData: [])
+        
+        for stock in favStockStorage{
+            if ticker == stock.ticker{
+                self.isFavorite = true
+                break
+            }
+        }
+        
         //Fetch data
-        //1. stocks company information
+        //2. stocks company information
         var url = "http://ttxhzz.us-east-1.elasticbeanstalk.com/api/company/\(ticker)"
         AF.request(url).validate().responseJSON{ (response) in
             if let data = response.data {
@@ -59,7 +69,7 @@ class StockDetail: ObservableObject{
             }
         }
         
-        //2. stock lastest price information
+        //3. stock lastest price information
         url = "http://ttxhzz.us-east-1.elasticbeanstalk.com/api/stock/latest/\(ticker)"
         AF.request(url).validate().responseJSON{ (response) in
             if let data = response.data {
@@ -73,32 +83,40 @@ class StockDetail: ObservableObject{
                 self.priceMid = json["mid"].doubleValue
                 self.priceBid = json["bidPrice"].doubleValue
                 self.volume = json["volume"].intValue
+                
+                //update self.marketValue since it need self.stockInfo.lastPrice!
+                for stock in sharesStorage{
+                    if ticker == stock.ticker{
+                        self.isOwned = true
+                        self.stockInfo.sharesNum = stock.shares
+                        self.marketValue = self.stockInfo.sharesNum * self.stockInfo.lastPrice!
+                    }
+                }
                 self.isGetLatestPrice.toggle()
             }
         }
-        //TODO: 3. news
-        //TODO: 4. historial data
-        
-        //5. stock buys and favorite(by chenking userdefalut)
-        let favStockStorage = HomeScreenData.getStocksInUserDefault(type: "favorite", defaultData: [])
-        let sharesStorage = HomeScreenData.getStocksInUserDefault(type: "shares", defaultData: [])
-        
-        for stock in favStockStorage{
-            if ticker == stock.ticker{
-                self.isFavorite = true
-                break
+        //4. news
+        url = "http://ttxhzz.us-east-1.elasticbeanstalk.com/api/news/\(ticker)"
+        AF.request(url).validate().responseJSON{ (response) in
+            if let data = response.data {
+                let json = JSON(data)
+                var cnt = 0
+                for (_,jsStock):(String, JSON) in json{
+                    let news = News(urlToImage: jsStock["urlToImage"].stringValue,
+                                    source: jsStock["source"].stringValue,
+                                    title: jsStock["title"].stringValue,
+                                    url: jsStock["url"].stringValue,
+                                    publishedAt: jsStock["publishedAt"].stringValue)
+                    self.newsList.append(news)
+                    cnt += 1
+                    if (cnt > 10) {
+                        break
+                    }
+                }
+                self.isGetNews.toggle()
             }
         }
-        
-        for stock in sharesStorage{
-            if ticker == stock.ticker{
-                self.isOwned = true
-                self.stockInfo.sharesNum = stock.shares
-                self.marketValue = self.stockInfo.sharesNum! * self.stockInfo.lastPrice!
-            }
-        }
-        
-        
+        //TODO: 5. historial data
         
         
     }

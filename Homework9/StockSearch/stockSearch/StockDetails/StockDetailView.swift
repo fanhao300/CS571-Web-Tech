@@ -13,19 +13,23 @@ struct StockDetailView: View {
     @EnvironmentObject var data: HomeScreenData
 
     var body: some View {
-        if stockDetail.isGetCompany && stockDetail.isGetLatestPrice{
+        if stockDetail.isGetCompany && stockDetail.isGetLatestPrice &&
+            stockDetail.isGetNews{
             ScrollView {
                 VStack {
                     StockDetail_Header(stockInfo: stockDetail.stockInfo)
                     
                     StockDetail_Highcharts()
                     
-                    StockDetail_Portfolio(portfolio: stockDetail)
+                    StockDetail_Portfolio()
+                        .environmentObject(stockDetail)
                     
                     StockDetail_About(about: stockDetail.about)
                 }
                 .padding()
             }
+            .navigationBarTitle(stockDetail.stockInfo.ticker)
+            .navigationBarItems(trailing: favoriteButton(isFavorite: $stockDetail.isFavorite, stock: stockDetail.stockInfo))
         }
         else {
             loadingView()

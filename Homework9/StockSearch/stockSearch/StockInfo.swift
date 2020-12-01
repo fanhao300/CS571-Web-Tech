@@ -7,13 +7,21 @@
 
 import Foundation
 
-struct StockInfo: Identifiable{
+class StockInfo: Identifiable, ObservableObject{
     var id = UUID()
     var ticker: String
     var company: String
-    var lastPrice: Double? = nil
-    var change: Double? = nil
-    var sharesNum: Double? = nil
+    @Published var lastPrice: Double?
+    @Published var change: Double?
+    @Published var sharesNum: Double
+    
+    init(ticker: String, company: String, lastPrice: Double?=nil, change: Double?=nil, sharesNum: Double=0){
+        self.ticker = ticker
+        self.company = company
+        self.lastPrice = lastPrice
+        self.change = change
+        self.sharesNum = sharesNum
+    }
 }
 
 

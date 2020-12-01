@@ -10,20 +10,6 @@ import Alamofire
 import SwiftyJSON
 
 class HomeScreenData: ObservableObject{
-    static let defaultFavStocks = [
-        StockStorage(ticker: "AAPL", company: "Apple Inc."),
-        StockStorage(ticker: "AMZN", company: "Amazon Inc.")
-    ]
-    static let defaultPortStocks = [
-        StockStorage(ticker: "AAPL", company: "Apple Inc."),
-        StockStorage(ticker: "GOOG", company: "Google Inc.")
-    ]
-    static let defaultBoughtStocks = [
-        StockStorage(ticker:"AAPL", shares: 1.2),
-        StockStorage(ticker:"GOOG", shares: 0.3)
-    ]
-    
-    
     @Published var favoriteStocks = [StockInfo]() {
         didSet{
             persistStocks("favorite", self.favoriteStocks)
@@ -34,15 +20,14 @@ class HomeScreenData: ObservableObject{
             persistStocks("portfolio", self.portfolioStocks)
         }
     }
-    @Published var netWorth:String = loadNetWorth(){
+    @Published var balance: Double = 0{
         didSet{
-            persistNetWorth()
+            persistBalance()
         }
     }
     @Published var date:String
     
     var isFinish: Bool = false
-    
     
     static private func updateDate() -> String{
         let now = Date()
@@ -66,20 +51,29 @@ class HomeScreenData: ObservableObject{
         if let encoded = try? encoder.encode(storage) {
             UserDefaults.standard.set(encoded, forKey: type)
         }
-    }
-    
-    static private func loadNetWorth() -> String{
-        let netWorth = UserDefaults.standard.string(forKey:"netWorth")
-        if let netWorth = netWorth{
-            return netWorth
+        
+        //update shares userdefault
+        if (type == "portfolio"){
+            var storage = [StockStorage]()
+            for stock in data{
+                let storageCell = StockStorage(ticker: stock.ticker, shares: stock.sharesNum)
+                storage.append(storageCell)
+            }
+            let encoder = JSONEncoder()
+            if let encoded = try? encoder.encode(storage) {
+                UserDefaults.standard.set(encoded, forKey: "shares")
+            }
         }
-        return "20000.00"
     }
     
-    private func persistNetWorth(){
-        UserDefaults.standard.set(netWorth, forKey: "netWorth")
+    static private func loadBalance() -> Double{
+        let balance = UserDefaults.standard.double(forKey:"balance")
+        return balance
     }
     
+    private func persistBalance(){
+        UserDefaults.standard.set(balance, forKey: "balance")
+    }
     
     
     static public func getStocksInUserDefault(type: String, defaultData:[StockStorage]) -> [StockStorage]{
@@ -87,7 +81,6 @@ class HomeScreenData: ObservableObject{
         var ret: [StockStorage] = defaultData
         print(type)
         print(ret)
-//        print(savedStocks)
         if let savedStocks = savedStocks as? Data{
             let decoder = JSONDecoder()
             ret = (try? decoder.decode([StockStorage].self, from: savedStocks)) ?? defaultData
@@ -122,20 +115,33 @@ class HomeScreenData: ObservableObject{
         return ret
     }
     
+    var netWorth: Double{
+        var ret: Double = 0
+        for stock in self.portfolioStocks{
+            ret += stock.lastPrice! * stock.sharesNum
+        }
+        ret += self.balance
+        return ret
+    }
+   
     
     init(){
         //If want to reset userDefalut, uncomment these lines
-        
-        if let appDomain = Bundle.main.bundleIdentifier {
-            UserDefaults.standard.removePersistentDomain(forName: appDomain)
-        }
+        //If want to reset userDefalut, uncomment these lines
+//        if let appDomain = Bundle.main.bundleIdentifier {
+//            UserDefaults.standard.removePersistentDomain(forName: appDomain)
+//        }
+//        UserDefaults.standard.set(200000, forKey: "balance")
+        //If want to reset userDefalut, uncomment these lines
+        //If want to reset userDefalut, uncomment these lines
         
         self.date = HomeScreenData.updateDate()
+        self.balance = HomeScreenData.loadBalance()
         
         //Get stocks from userDefault
-        let favStockStorage = HomeScreenData.getStocksInUserDefault(type: "favorite", defaultData: HomeScreenData.defaultFavStocks)
-        let portStocksStorage = HomeScreenData.getStocksInUserDefault(type: "portfolio", defaultData: HomeScreenData.defaultPortStocks)
-        let sharesStorage = HomeScreenData.getStocksInUserDefault(type: "shares", defaultData: HomeScreenData.defaultBoughtStocks)
+        let favStockStorage = HomeScreenData.getStocksInUserDefault(type: "favorite", defaultData: [])
+        let portStocksStorage = HomeScreenData.getStocksInUserDefault(type: "portfolio", defaultData: [])
+        let sharesStorage = HomeScreenData.getStocksInUserDefault(type: "shares", defaultData: [])
         
         //get all tickers from userDefault
         var tickers = ""
