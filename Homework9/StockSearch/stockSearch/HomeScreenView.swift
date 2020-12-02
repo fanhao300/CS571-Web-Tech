@@ -63,6 +63,7 @@ struct HomeScreenView: View {
                         }
                     }
                 }
+                .environment(\.defaultMinListRowHeight, 5)
                 .navigationTitle("Stocks")
                 .add(self.searchBar)
                 .toolbar{
