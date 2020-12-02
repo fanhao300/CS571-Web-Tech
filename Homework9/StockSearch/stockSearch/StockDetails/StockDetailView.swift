@@ -25,8 +25,15 @@ struct StockDetailView: View {
                         .environmentObject(stockDetail)
                     
                     StockDetail_About(about: stockDetail.about)
+                    
+                    StockDetail_News(newsList: stockDetail.newsList)
+                    
+//                    List(stockDetail.newsList) { item in
+//                        StockDetail_NewsRow(news: item)
+//                    }
+                    
                 }
-                .padding()
+                .padding(.horizontal, 5)
             }
             .navigationBarTitle(stockDetail.stockInfo.ticker)
             .navigationBarItems(trailing: favoriteButton(isFavorite: $stockDetail.isFavorite, stock: stockDetail.stockInfo))
@@ -40,6 +47,6 @@ struct StockDetailView: View {
 
 struct StockDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        StockDetailView(stockDetail: StockDetail(ticker: "AAPL"))
+        StockDetailView(stockDetail: StockDetail(ticker: "BABA"))
     }
 }

@@ -24,6 +24,7 @@ struct StockDetail_Header: View {
                 
                 HStack {
                     Text(String(format: "$%.2f", stockInfo.lastPrice!))
+                        .fontWeight(.semibold)
                         .font(.title)
                     
                     renderPriceChanged(String(format: "%.2f", stockInfo.change!))

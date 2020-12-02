@@ -16,23 +16,25 @@ struct StockDetail_Portfolio: View {
         VStack(alignment: .leading, spacing: 15) {
             HStack {
                 Text("Portfolio")
-                    .font(.title)
+                    .font(.title3)
                 Spacer()
             }
             HStack {
                 if stockDetail.isOwned {
-                    VStack(spacing: 15) {
+                    VStack(alignment: .leading, spacing: 15) {
                         Text(String(format: "Shares Owned: %.4f", stockDetail.stockInfo.sharesNum))
-                            .font(.body)
+                            .font(.caption)
                         Text(String(format: "Market Value: $%.2f", stockDetail.marketValue))
-                            .font(.body)
+                            .font(.caption)
                     }
                 } else {
                     Text("You have 0 shares of \(stockDetail.stockInfo.ticker).\nStart trading!")
+                        .font(.caption)
                 }
                 Spacer()
                 Button("Trade", action: {showTradeSheet.toggle()})
-                    .frame(width: 150, height: 60, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                    .font(.callout)
+                    .frame(width: 150, height: 50, alignment: .center)
                     .foregroundColor(.white)
                     .background(Color.green)
                     .cornerRadius(25)
@@ -40,28 +42,30 @@ struct StockDetail_Portfolio: View {
             
             HStack {
                 Text("Stats")
-                    .font(.title)
+                    .font(.title3)
                 Spacer()
             }
             
             let rows: [GridItem] = Array(repeating: .init(alignment: .leading), count: 3)
             ScrollView(.horizontal) {
-                LazyHGrid(rows: rows, spacing: 30) {
+                LazyHGrid(rows: rows, spacing: 15) {
                     ForEach(stockDetail.statsList, id: \.self) { item in
                         Text(item)
-                            .font(.body)
+                            .font(.footnote)
                     }
                 }
             }
-            .frame(width: .infinity, height: 100)
+            .frame(height: 100)
         }
         .sheet(isPresented: $showTradeSheet, content: {
             StockDetail_TradeSheet(showSheet: $showTradeSheet)
         })
     }
 }
+
 //struct StockDetail_Portfolio_Previews: PreviewProvider {
 //    static var previews: some View {
-//        StockDetail_Portfolio(portfolio: myFooStockDetail)
+//        var stockDetail = StockDetail(ticker: "AAPL")
+//        StockDetail_Portfolio(stockDetail: .constant(stockDetail))
 //    }
 //}
