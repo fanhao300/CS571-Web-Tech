@@ -29,6 +29,9 @@ struct StockDetailView: View {
                         .environmentObject(stockDetail)
                     
                     StockDetail_About(about: stockDetail.about)
+                    
+                    StockDetail_News(newsList: stockDetail.newsList)
+                    
                 }
                 .padding([.leading, .bottom, .trailing])
             }
@@ -54,6 +57,6 @@ struct StockDetailView: View {
 
 struct StockDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        StockDetailView(stockDetail: StockDetail(ticker: "AAPL"))
+        StockDetailView(stockDetail: StockDetail(ticker: "BABA"))
     }
 }

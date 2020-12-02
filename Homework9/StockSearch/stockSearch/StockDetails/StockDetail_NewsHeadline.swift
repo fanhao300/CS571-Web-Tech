@@ -11,7 +11,7 @@ import KingfisherSwiftUI
 struct StockDetail_NewsHeadline: View {
     let news: News
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .center, spacing: 10) {
             KFImage(URL(string: news.urlToImage))
                 .resizable()
                 .aspectRatio(contentMode: .fill)
@@ -19,26 +19,29 @@ struct StockDetail_NewsHeadline: View {
                 .clipped()
                 .cornerRadius(15)
                     
-            HStack (spacing: 10) {
-                Text(news.source)
-                    .font(.caption2)
-                    .foregroundColor(.gray)
+            VStack(alignment: .leading, spacing: 3) {
+                HStack (spacing: 10) {
+                    Text(news.source)
+                        .font(.caption2)
+                        .foregroundColor(.gray)
+                    
+                    Text(news.elapsedTime)
+                        .font(.caption2)
+                        .foregroundColor(.gray)
+                    
+                    Spacer()
+                }
+                .padding(.horizontal, 10)
                 
-                Text("XXX times ago")
-                    .font(.caption2)
-                    .foregroundColor(.gray)
-                
-                Spacer()
+                Text(news.title)
+                    .font(.headline)
+                    .padding(.horizontal, 10)
+                    .padding(.bottom, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                    
             }
-            
-            Text(news.title)
-                .font(.headline)
-            
-            
-            
         }
         .background(Color.white)
-        .cornerRadius(15)
+        .contentShape(RoundedRectangle(cornerRadius: 15))
         .contextMenu(ContextMenu(menuItems: {
             Button(action: {}, label: {
                 Text("Open in Safari")
