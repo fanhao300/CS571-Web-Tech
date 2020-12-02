@@ -16,7 +16,7 @@ struct StockDetail_Portfolio: View {
     @State var type: String = ""
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 15) {
+        VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text("Portfolio")
                     .font(.title3)
@@ -24,7 +24,7 @@ struct StockDetail_Portfolio: View {
             }
             HStack {
                 if stockDetail.isOwned {
-                    VStack(alignment: .leading, spacing: 15) {
+                    VStack(alignment: .leading, spacing: 12) {
                         Text(String(format: "Shares Owned: %.4f", stockDetail.stockInfo.sharesNum))
                             .font(.caption)
                         Text(String(format: "Market Value: $%.2f", stockDetail.marketValue))
@@ -51,7 +51,7 @@ struct StockDetail_Portfolio: View {
             
             let rows: [GridItem] = Array(repeating: .init(alignment: .leading), count: 3)
             ScrollView(.horizontal) {
-                LazyHGrid(rows: rows, spacing: 15) {
+                LazyHGrid(rows: rows, spacing: 12) {
                     ForEach(stockDetail.statsList, id: \.self) { item in
                         Text(item)
                             .font(.footnote)

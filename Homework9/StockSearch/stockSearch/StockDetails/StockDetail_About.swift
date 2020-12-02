@@ -16,7 +16,6 @@ struct StockDetail_About: View {
             HStack {
                 Text("About")
                     .font(.title3)
-                
                 Spacer()
             }
             
@@ -27,7 +26,11 @@ struct StockDetail_About: View {
                 }
                 .frame(maxHeight: isCollapsed ? 50 : .none)
                 
-                Button(isCollapsed ? "Show more..." : "Show less") {isCollapsed.toggle()}
+                Button(isCollapsed ? "Show more..." : "Show less") {
+                    withAnimation{
+                        isCollapsed.toggle()
+                    }
+                }
                     .font(.footnote)
                     .foregroundColor(.gray)
             }

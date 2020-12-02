@@ -20,14 +20,14 @@ struct StockDetailView: View {
             ScrollView {
                 VStack {
                     StockDetail_Header(stockInfo: stockDetail.stockInfo)
-                    
+
                     Highchart(ticker: stockDetail.stockInfo.ticker)
                         .frame(height: 366)
                         .padding(.all, -12.0)
-                    
+
                     StockDetail_Portfolio()
                         .environmentObject(stockDetail)
-                    
+//
                     StockDetail_About(about: stockDetail.about)
                     
                     StockDetail_News(newsList: stockDetail.newsList)
@@ -57,6 +57,8 @@ struct StockDetailView: View {
 
 struct StockDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        StockDetailView(stockDetail: StockDetail(ticker: "BABA"))
+        Group {
+            StockDetailView(stockDetail: StockDetail(ticker: "BABA"))
+        }
     }
 }

@@ -16,7 +16,6 @@ struct StockDetail_News: View {
             HStack {
                 Text("News")
                     .font(.title3)
-                
                 Spacer()
             }
             
@@ -26,23 +25,12 @@ struct StockDetail_News: View {
             Divider()
             
             // News List
-            
-//            List(newsList) {item in
-//                StockDetail_NewsRow(news: item)
-//            }
             VStack {
-                ForEach(newsList) {item in
+                ForEach(newsList[1...]) {item in
                     StockDetail_NewsRow(news: item)
                 }
             }
-            //.scaledToFill()
-            //.frame(height: .infinity)
-            
         }
-        
-//        KFImage(URL(string: newsList[1].urlToImage))
-//            .resizable()
-//            .cornerRadius(15)
     }
 }
 

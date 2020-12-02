@@ -79,13 +79,10 @@ class HomeScreenData: ObservableObject{
     static public func getStocksInUserDefault(type: String, defaultData:[StockStorage]) -> [StockStorage]{
         let savedStocks = UserDefaults.standard.object(forKey: type)
         var ret: [StockStorage] = defaultData
-        print(type)
-        print(ret)
         if let savedStocks = savedStocks as? Data{
             let decoder = JSONDecoder()
             ret = (try? decoder.decode([StockStorage].self, from: savedStocks)) ?? defaultData
         }
-        print(ret)
         return ret
     }
     
@@ -151,19 +148,15 @@ class HomeScreenData: ObservableObject{
         for stock in portStocksStorage{
             tickers += stock.ticker + ","
         }
-        print(tickers)
-        print(self.date)
         
         //Fetch data
         let url = "http://ttxhzz.us-east-1.elasticbeanstalk.com/api/stocks/latest/" + tickers
         AF.request(url).validate().responseJSON{ (response) in
             if let data = response.data {
                 let json = JSON(data)
-                print(json)
                 self.favoriteStocks = self.getStockInfo(json: json, stockStorage: favStockStorage, shares: sharesStorage)
                 self.portfolioStocks = self.getStockInfo(json: json, stockStorage: portStocksStorage, shares: sharesStorage)
                 self.isFinish.toggle()
-                print(self.favoriteStocks)
             }
         }
     }

@@ -61,7 +61,6 @@ class StockDetail: ObservableObject{
         AF.request(url).validate().responseJSON{ (response) in
             if let data = response.data {
                 let json = JSON(data)
-                print(json)
                 self.stockInfo.company = json["name"].stringValue
                 self.about = json["description"].stringValue
                 self.isGetCompany.toggle()
@@ -73,7 +72,6 @@ class StockDetail: ObservableObject{
         AF.request(url).validate().responseJSON{ (response) in
             if let data = response.data {
                 let json = JSON(data)
-                print(json)
                 self.stockInfo.change = json["change"].doubleValue
                 self.stockInfo.lastPrice = json["last"].doubleValue
                 self.priceOpen = json["open"].doubleValue

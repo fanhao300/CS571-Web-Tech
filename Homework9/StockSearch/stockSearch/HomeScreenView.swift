@@ -117,6 +117,7 @@ struct Stockcell: View {
         NavigationLink(
             destination: StockDetailView(stockDetail: StockDetail(ticker: stock.ticker))
             ) {
+            HStack{
             VStack(alignment: .leading) {
                 Text(stock.ticker)
                     .fontWeight(.bold)
@@ -172,6 +173,7 @@ struct Stockcell: View {
 
                 }
             }
+        }
         }
     }
 }
