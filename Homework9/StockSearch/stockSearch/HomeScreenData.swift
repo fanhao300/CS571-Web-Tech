@@ -128,7 +128,7 @@ class HomeScreenData: ObservableObject{
 //        if let appDomain = Bundle.main.bundleIdentifier {
 //            UserDefaults.standard.removePersistentDomain(forName: appDomain)
 //        }
-//        UserDefaults.standard.set(200000, forKey: "balance")
+//        UserDefaults.standard.set(20000, forKey: "balance")
         //If want to reset userDefalut, uncomment these lines
         //If want to reset userDefalut, uncomment these lines
         
@@ -150,15 +150,34 @@ class HomeScreenData: ObservableObject{
         }
         
         //Fetch data
+        self.getStocksPrice(tickers, favStockStorage, portStocksStorage, sharesStorage)
+        
+        let timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { timer in
+            self.getStockPrice(tickers, favStockStorage, portStocksStorage, sharesStorage)
+        }
+    }
+    
+    func getStocksPrice(_ tickers: String, _ favStockStorage: [StockStorage],
+                        _ portStocksStorage: [StockStorage], _ sharesStorage: [StockStorage]){
         let url = "http://ttxhzz.us-east-1.elasticbeanstalk.com/api/stocks/latest/" + tickers
         AF.request(url).validate().responseJSON{ (response) in
             if let data = response.data {
                 let json = JSON(data)
                 self.favoriteStocks = self.getStockInfo(json: json, stockStorage: favStockStorage, shares: sharesStorage)
                 self.portfolioStocks = self.getStockInfo(json: json, stockStorage: portStocksStorage, shares: sharesStorage)
-                self.isFinish.toggle()
+                if !self.isFinish{
+                    self.isFinish.toggle()
+                }
+                
+                //Log Inf
+                print(Date())
+                for stock in self.favoriteStocks{
+                    print(stock.ticker, ":", String(stock.lastPrice!))
+                }
+               
             }
         }
+        
     }
     
     
@@ -170,6 +189,16 @@ class HomeScreenData: ObservableObject{
     }
     func moveFavoriteStock(from source: IndexSet, to destination: Int) {
         self.favoriteStocks.move(fromOffsets: source, toOffset: destination)
+    }
+    
+    func getStockPrice(_ tickers: String, _ favStockStorage: [StockStorage],
+                        _ portStocksStorage: [StockStorage], _ sharesStorage: [StockStorage]){
+        if self.isFinish{
+            print(Date())
+            for stock in self.favoriteStocks{
+                print(stock.ticker, ":", String(stock.lastPrice!))
+            }
+        }
     }
     
 }

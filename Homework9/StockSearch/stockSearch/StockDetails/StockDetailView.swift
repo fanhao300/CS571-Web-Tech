@@ -27,7 +27,7 @@ struct StockDetailView: View {
 
                     StockDetail_Portfolio()
                         .environmentObject(stockDetail)
-//
+                    
                     StockDetail_About(about: stockDetail.about)
                     
                     StockDetail_News(newsList: stockDetail.newsList)

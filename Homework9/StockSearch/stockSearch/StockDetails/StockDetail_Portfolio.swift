@@ -31,8 +31,12 @@ struct StockDetail_Portfolio: View {
                             .font(.caption)
                     }
                 } else {
-                    Text("You have 0 shares of \(stockDetail.stockInfo.ticker).\nStart trading!")
-                        .font(.caption)
+                    VStack(alignment: .leading) {
+                        Text("You have 0 shares of \(stockDetail.stockInfo.ticker).")
+                            .font(.caption)
+                        Text("Start trading")
+                            .font(.caption)
+                    }
                 }
                 Spacer()
                 Button("Trade", action: {showTradeSheet.toggle()})
@@ -58,7 +62,7 @@ struct StockDetail_Portfolio: View {
                     }
                 }
             }
-            .frame(height: 100)
+            .frame(height: 80)
         }
         .sheet(isPresented: $showTradeSheet, content: {
             if showCongrtulationSheet {

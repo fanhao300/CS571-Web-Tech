@@ -40,6 +40,38 @@ class StockDetail: ObservableObject{
         ]
     }
     
+    func getStockPrice(_ ticker: String, _ sharesStorage: [StockStorage]) {
+        let url = "http://ttxhzz.us-east-1.elasticbeanstalk.com/api/stock/latest/\(ticker)"
+        AF.request(url).validate().responseJSON{ (response) in
+            if let data = response.data {
+                let json = JSON(data)
+                self.stockInfo.change = json["change"].doubleValue
+                self.stockInfo.lastPrice = json["last"].doubleValue
+                self.priceOpen = json["open"].doubleValue
+                self.priceHigh = json["high"].doubleValue
+                self.priceLow = json["low"].doubleValue
+                self.priceMid = json["mid"].doubleValue
+                self.priceBid = json["bidPrice"].doubleValue
+                self.volume = json["volume"].intValue
+                
+                //update self.marketValue since it need self.stockInfo.lastPrice!
+                for stock in sharesStorage{
+                    if ticker == stock.ticker{
+                        self.isOwned = true
+                        self.stockInfo.sharesNum = stock.shares
+                        self.marketValue = self.stockInfo.sharesNum * self.stockInfo.lastPrice!
+                    }
+                }
+                if !self.isGetLatestPrice{
+                    self.isGetLatestPrice.toggle()
+                }
+                
+                print(Date())
+                print(ticker, self.stockInfo.lastPrice!)
+            }
+        }
+    }
+    
     init (ticker: String){
         self.stockInfo.ticker = ticker
         
@@ -68,30 +100,12 @@ class StockDetail: ObservableObject{
         }
         
         //3. stock lastest price information
-        url = "http://ttxhzz.us-east-1.elasticbeanstalk.com/api/stock/latest/\(ticker)"
-        AF.request(url).validate().responseJSON{ (response) in
-            if let data = response.data {
-                let json = JSON(data)
-                self.stockInfo.change = json["change"].doubleValue
-                self.stockInfo.lastPrice = json["last"].doubleValue
-                self.priceOpen = json["open"].doubleValue
-                self.priceHigh = json["high"].doubleValue
-                self.priceLow = json["low"].doubleValue
-                self.priceMid = json["mid"].doubleValue
-                self.priceBid = json["bidPrice"].doubleValue
-                self.volume = json["volume"].intValue
-                
-                //update self.marketValue since it need self.stockInfo.lastPrice!
-                for stock in sharesStorage{
-                    if ticker == stock.ticker{
-                        self.isOwned = true
-                        self.stockInfo.sharesNum = stock.shares
-                        self.marketValue = self.stockInfo.sharesNum * self.stockInfo.lastPrice!
-                    }
-                }
-                self.isGetLatestPrice.toggle()
-            }
+        getStockPrice(ticker, sharesStorage)
+        
+        let timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { timer in
+            self.getStockPrices(ticker, sharesStorage)
         }
+        
         //4. news
         url = "http://ttxhzz.us-east-1.elasticbeanstalk.com/api/news/\(ticker)"
         AF.request(url).validate().responseJSON{ (response) in
@@ -112,6 +126,13 @@ class StockDetail: ObservableObject{
                 }
                 self.isGetNews.toggle()
             }
+        }
+    }
+    
+    func getStockPrices(_ ticker: String, _ sharesStorage: [StockStorage]) {
+        if self.isGetLatestPrice{
+            print(Date())
+            print(ticker, self.stockInfo.lastPrice!)
         }
     }
 }

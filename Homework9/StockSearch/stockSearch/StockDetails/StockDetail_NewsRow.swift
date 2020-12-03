@@ -43,27 +43,27 @@ struct StockDetail_NewsRow: View {
                 
             }
             .background(Color.white)
-            .contentShape(RoundedRectangle(cornerRadius: 15))
-            .contextMenu(ContextMenu(menuItems: {
-                Button(action: {
-                    openURL(URL(string: news.url)!)
-                }, label: {
-                    Text("Open in Safari")
-                    Spacer()
-                    Image(systemName: "safari")
-                })
-                
-                Button(action: {
-                    openURL(URL(string: getTwitterURL(news.url))!)
-                    
-                }, label: {
-                    Text("Share on Twitter")
-                    Spacer()
-                    Image(systemName: "square.and.arrow.up")
-                })
-            }))
         }
         .animation(/*@START_MENU_TOKEN@*/.linear/*@END_MENU_TOKEN@*/)
+        .contentShape(RoundedRectangle(cornerRadius: 15))
+        .contextMenu(ContextMenu(menuItems: {
+            Button(action: {
+                openURL(URL(string: news.url)!)
+            }, label: {
+                Text("Open in Safari")
+                Spacer()
+                Image(systemName: "safari")
+            })
+            
+            Button(action: {
+                openURL(URL(string: getTwitterURL(news.url))!)
+                
+            }, label: {
+                Text("Share on Twitter")
+                Spacer()
+                Image(systemName: "square.and.arrow.up")
+            })
+        }))
     }
     
     func getTwitterURL(_ newsURL: String) -> String{

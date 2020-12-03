@@ -20,14 +20,18 @@ struct StockDetail_News: View {
             }
             
             // Headline News
-            StockDetail_NewsHeadline(news: newsList[0])
+            if newsList.count > 0{
+                StockDetail_NewsHeadline(news: newsList[0])
+            }
             
-            Divider()
             
             // News List
-            VStack {
-                ForEach(newsList[1...]) {item in
-                    StockDetail_NewsRow(news: item)
+            if newsList.count > 1 {
+                Divider()
+                VStack {
+                    ForEach(newsList[1...]) {item in
+                        StockDetail_NewsRow(news: item)
+                    }
                 }
             }
         }

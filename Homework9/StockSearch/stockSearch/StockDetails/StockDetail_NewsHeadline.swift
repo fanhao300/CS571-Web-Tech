@@ -14,11 +14,11 @@ struct StockDetail_NewsHeadline: View {
     let news: News
     var body: some View {
         Link(destination: URL(string: news.url)!){
-            VStack(alignment: .center, spacing: 10) {
+            VStack(spacing: 10) {
                 KFImage(URL(string: news.urlToImage))
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 360, height: 200, alignment: .center)
+                    .frame(width: 340, height: 200, alignment: .center)
                     .clipped()
                     .cornerRadius(15)
                         
@@ -37,32 +37,33 @@ struct StockDetail_NewsHeadline: View {
                     Text(news.title)
                         .font(.headline)
                         .foregroundColor(.black)
+                        .frame(minHeight: 50)
                 }
-                .frame(minHeight: 100)
                 .padding([.leading, .bottom, .trailing], 5.0)
+                
                 
             }
             .background(Color.white)
-            .contentShape(RoundedRectangle(cornerRadius: 15))
-            .contextMenu(ContextMenu(menuItems: {
-                Button(action: {
-                    openURL(URL(string: news.url)!)
-                }, label: {
-                    Text("Open in Safari")
-                    Spacer()
-                    Image(systemName: "safari")
-                })
-
-                Button(action: {
-                    openURL(URL(string: getTwitterURL(news.url))!)
-                }, label: {
-                    Text("Share on Twitter")
-                    Spacer()
-                    Image(systemName: "square.and.arrow.up")
-                })
-            }))
         }
         .animation(/*@START_MENU_TOKEN@*/.linear/*@END_MENU_TOKEN@*/)
+        .contentShape(RoundedRectangle(cornerRadius: 15))
+        .contextMenu(ContextMenu(menuItems: {
+            Button(action: {
+                openURL(URL(string: news.url)!)
+            }, label: {
+                Text("Open in Safari")
+                Spacer()
+                Image(systemName: "safari")
+            })
+
+            Button(action: {
+                openURL(URL(string: getTwitterURL(news.url))!)
+            }, label: {
+                Text("Share on Twitter")
+                Spacer()
+                Image(systemName: "square.and.arrow.up")
+            })
+        }))
     }
     
     func getTwitterURL(_ newsURL: String) -> String{

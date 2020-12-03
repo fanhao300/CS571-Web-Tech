@@ -42,6 +42,7 @@ struct StockDetail_TradeSheet: View {
                 data.balance -= shares * stockDetail.stockInfo.lastPrice!
                 //2 update stock detail
                 stockDetail.stockInfo.sharesNum += shares
+                stockDetail.marketValue = stockDetail.stockInfo.sharesNum * stockDetail.stockInfo.lastPrice!
                 //3 update data.portfolioStocks
                 data.portfolioStocks = data.portfolioStocks.filter{
                     $0.ticker != stockDetail.stockInfo.ticker
@@ -91,6 +92,7 @@ struct StockDetail_TradeSheet: View {
                 data.balance += shares * stockDetail.stockInfo.lastPrice!
                 //2 update stock detail
                 stockDetail.stockInfo.sharesNum -= shares
+                stockDetail.marketValue = stockDetail.stockInfo.sharesNum * stockDetail.stockInfo.lastPrice!
                 //3 update data.portfolioStocks
                 data.portfolioStocks = data.portfolioStocks.filter{
                     $0.ticker != stockDetail.stockInfo.ticker
@@ -110,7 +112,7 @@ struct StockDetail_TradeSheet: View {
                 }
                 
                 //Congratulation
-                type = "sell"
+                type = "sold"
                 withAnimation {
                     showCongrtulationSheet.toggle()
                 }
